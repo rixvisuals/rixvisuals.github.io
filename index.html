@@ -46,6 +46,7 @@
             font-family: var(--font-stack);
         }
 
+        /* Desktop Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -58,6 +59,19 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: var(--accent-color);
+        }
+
+        /* Mobile Scrollbar Removal Fix */
+        @media (max-width: 768px) {
+            html, body {
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* IE/Edge */
+            }
+            ::-webkit-scrollbar {
+                display: none; /* Safari and Chrome */
+                width: 0 !important;
+                height: 0 !important;
+            }
         }
 
         a {
@@ -98,7 +112,7 @@
         }
 
         /* --------------------------------------------------
-           NAVIGATION (SAFARI CENTERING OPTIMIZED)
+           NAVIGATION
            -------------------------------------------------- */
         .nav-wrapper {
             position: fixed;
