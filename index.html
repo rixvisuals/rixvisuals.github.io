@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;800&display=swap" rel="stylesheet">
 
+    <!-- Premium Animation Engines -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
@@ -102,49 +103,6 @@
         @keyframes flowGradient {
             0% { background-position: 0% center; }
             100% { background-position: 200% center; }
-        }
-
-        /* --------------------------------------------------
-           WAVY STRIPES BACKGROUND EFFECT
-           -------------------------------------------------- */
-        .wavy-stripes-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-            background: #ffffff;
-            opacity: 0.65;
-        }
-
-        .wavy-stripes-bg::before {
-            content: "";
-            position: absolute;
-            width: 300%;
-            height: 300%;
-            top: -100%;
-            left: -100%;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 40px,
-                rgba(0, 0, 0, 0.015) 40px,
-                rgba(0, 0, 0, 0.015) 80px,
-                transparent 80px,
-                transparent 120px,
-                rgba(255, 76, 76, 0.012) 120px,
-                rgba(255, 76, 76, 0.012) 160px
-            );
-            animation: moveStripes 35s linear infinite;
-        }
-
-        @keyframes moveStripes {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(-5%, -5%) rotate(2deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
         }
 
         /* --------------------------------------------------
@@ -325,7 +283,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify(content): center;
             align-items: center;
             position: relative;
             overflow: hidden;
@@ -361,7 +319,6 @@
             text-align: left;
         }
 
-        /* Refined container frame holding the zoom master img */
         .hero-image-side {
             width: 100%;
             height: 580px;
@@ -374,7 +331,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scale(1.4); /* Starts immersive, scaled down via GSAP JS */
+            transform: scale(1.4); 
             will-change: transform;
         }
 
@@ -497,7 +454,7 @@
         }
         
         /* --------------------------------------------------
-           PORTFOLIO GRID & INTERACTIVE BEFORE/AFTER SLIDER
+           PORTFOLIO GRID & FIXED BEFORE/AFTER SLIDER
            -------------------------------------------------- */
         #portfolio {
             padding: 100px 24px;
@@ -546,7 +503,7 @@
             transform: scale(1.04);
         }
 
-        /* Interactive Split Image Slider Engine (Full Grid Row Width Placement) */
+        /* Fixed Interactive Split Image Slider Layout Structure */
         .slider-card-wrap {
             grid-column: 1 / -1;
             width: 100%;
@@ -570,18 +527,33 @@
             height: 100%;
             object-fit: cover;
             pointer-events: none;
+            display: block;
+        }
+
+        .slider-after-layer {
+            z-index: 1;
         }
 
         .slider-before-layer {
             z-index: 2;
-            width: 50%; /* Managed dynamically via input controller range */
+            width: 50%; 
             overflow: hidden;
+            height: 100%;
         }
 
-        /* Forces full matching background texture under masking clip bounds */
+        /* Locks the masked element scale setup horizontally across bounds */
         .slider-before-layer img {
-            width: 100.1%;
+            width: 100vw;
             max-width: none;
+            height: 100%;
+        }
+
+        /* Recalculate inner layer boundaries responsive to template track */
+        @media (min-width: 1400px) {
+            .slider-before-layer img { width: 1352px; }
+        }
+        @media (max-width: 1399px) and (min-width: 769px) {
+            .slider-before-layer img { width: calc(100vw - 48px); }
         }
 
         .slider-bar-controller {
@@ -593,6 +565,7 @@
             left: 50%;
             pointer-events: none;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            height: 100%;
         }
 
         .slider-handle-pill {
@@ -616,6 +589,8 @@
             top: 0; left: 0; width: 100%; height: 100%;
             opacity: 0;
             cursor: ew-resize;
+            margin: 0;
+            padding: 0;
         }
 
         @media (min-width: 1024px) {
@@ -627,6 +602,7 @@
             .gallery-wrapper { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .card-container { height: 240px; border-radius: 12px; }
             .slider-card-wrap { height: 320px; border-radius: 12px; }
+            .slider-before-layer img { width: calc(100vw - 32px) !important; }
         }
 
         /* --------------------------------------------------
@@ -878,8 +854,6 @@
 </head>
 <body>
 
-    <div class="wavy-stripes-bg"></div>
-
     <div class="nav-wrapper">
         <nav>
             <img class="pfp" src="https://i.postimg.cc/3R2hbWZx/20251029-143504560-i-OS-1.jpg" alt="Profile">
@@ -976,16 +950,21 @@
                 <div class="card"><img src="https://i.postimg.cc/CMbRrKM6/2_IR_2160.jpg" alt="Work 8"></div>
             </div>
 
+            <!-- Enhanced Interactive Before/After Split Editing Slider Card Container -->
             <div class="slider-card-wrap dynamic-fade-in-up">
+                <!-- After Image Layer -->
                 <div class="slider-img-container slider-after-layer">
-                    <img src="after.jpg" alt="">
+                    <img src="after.jpg" alt="After Retouching">
                 </div>
+                <!-- Masked Before Image Layer -->
                 <div class="slider-img-container slider-before-layer" id="beforeImgOverlay">
-                    <img src="before.jpg" alt="">
+                    <img src="before.jpg" alt="Before Retouching">
                 </div>
+                <!-- Control Divider Line -->
                 <div class="slider-bar-controller" id="sliderControlBar">
                     <div class="slider-handle-pill"></div>
                 </div>
+                <!-- Sliding Controller input -->
                 <input type="range" min="0" max="100" value="50" class="slider-input-range" id="sliderRangeInput" aria-label="Before and After Slider Control">
             </div>
         </div>
@@ -1106,7 +1085,7 @@
             }
         });
 
-        // Interactive Split Retouching Before/After Slide Engine
+        // Fixed Interactive Split Retouching Before/After Swipe Controller
         const sliderInput = document.getElementById('sliderRangeInput');
         const beforeOverlay = document.getElementById('beforeImgOverlay');
         const controlBar = document.getElementById('sliderControlBar');
