@@ -17,8 +17,11 @@
             --accent-color: #ff4c4c;
             --accent-glow: rgba(255, 76, 76, 0.2);
             --text-primary: #1d1d1f;
-            --text-secondary: #86868b; /* Apple's classic grey */
+            --text-secondary: #86868b;
             --easing: cubic-bezier(0.165, 0.84, 0.44, 1);
+            /* Dynamic high-motion spring bounce curve for elegant entrances */
+            --bounce-easing: cubic-bezier(0.34, 1.6, 0.64, 1);
+            --apple-spring: cubic-bezier(0.68, -0.6, 0.32, 1.6);
             --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
@@ -33,11 +36,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
-
         body {
             background-color: var(--bg-color);
             color: var(--text-primary);
@@ -46,7 +44,6 @@
             width: 100vw;
         }
 
-        /* Custom Scrollbar for Webkit */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -67,9 +64,6 @@
             cursor: pointer;
         }
 
-        /* --------------------------------------------------
-           TYPOGRAPHY & ANIMATIONS
-           -------------------------------------------------- */
         h1, h2, h3 {
             font-weight: 800;
             letter-spacing: -0.03em;
@@ -89,19 +83,21 @@
             100% { background-position: 200% center; }
         }
 
-        .fade-up {
+        /* High-motion bounce entrance class assignment */
+        .dynamic-bounce-up {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1s var(--easing), transform 1s var(--easing);
+            transform: translateY(60px) scale(0.95);
+            transition: opacity 0.8s var(--bounce-easing), transform 0.8s var(--bounce-easing);
+            will-change: transform, opacity;
         }
 
-        .fade-up.visible {
+        .dynamic-bounce-up.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         /* --------------------------------------------------
-           NAVIGATION (Floating Pill)
+           NAVIGATION & ANIMATED HAMBURGER
            -------------------------------------------------- */
         .nav-wrapper {
             position: fixed;
@@ -111,7 +107,7 @@
             display: flex;
             justify-content: center;
             z-index: 1000;
-            pointer-events: none; /* Let clicks pass through around the pill */
+            pointer-events: none;
         }
 
         nav {
@@ -169,60 +165,94 @@
             background: rgba(255, 76, 76, 0.08);
         }
 
-        /* Mobile Nav Toggles */
+        .mobile-toggle {
+            display: none;
+            width: 24px;
+            height: 18px;
+            position: relative;
+            cursor: pointer;
+            margin-left: 10px;
+            background: transparent;
+            border: none;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: var(--text-primary);
+            border-radius: 2px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .mobile-toggle span:nth-child(1) { top: 0px; }
+        .mobile-toggle span:nth-child(2) { top: 8px; }
+        .mobile-toggle span:nth-child(3) { top: 16px; }
+
+        .mobile-toggle.open span:nth-child(1) {
+            top: 8px;
+            transform: rotate(135deg);
+        }
+        .mobile-toggle.open span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+        .mobile-toggle.open span:nth-child(3) {
+            top: 8px;
+            transform: rotate(-135deg);
+        }
+
         @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+
             .nav-links {
-                display: none; /* Hidden by default on mobile */
                 position: absolute;
-                top: 70px;
+                top: 75px;
                 left: 50%;
-                transform: translateX(-50%);
-                background: rgba(255,255,255,0.95);
+                transform: translateX(-50%) scale(0.9);
+                background: rgba(255, 255, 255, 0.96);
                 backdrop-filter: blur(30px);
+                -webkit-backdrop-filter: blur(30px);
                 flex-direction: column;
-                padding: 20px;
+                padding: 24px 16px;
                 border-radius: 24px;
-                border: 1px solid rgba(0,0,0,0.08);
-                width: 200px;
+                border: 1px solid rgba(0, 0, 0, 0.08);
+                width: 240px;
                 text-align: center;
+                gap: 12px;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
                 opacity: 0;
                 pointer-events: none;
-                transition: opacity 0.3s ease;
+                transition: transform 0.4s var(--apple-spring), opacity 0.3s ease;
             }
 
             .nav-links.open {
-                display: flex;
                 opacity: 1;
                 pointer-events: auto;
+                transform: translateX(-50%) scale(1);
             }
-
-            .mobile-toggle {
-                display: block;
-                color: var(--text-primary);
-                font-size: 1.5rem;
-                margin-left: 10px;
-                cursor: pointer;
-            }
-        }
-        @media (min-width: 769px) {
-            .mobile-toggle { display: none; }
         }
 
         /* --------------------------------------------------
-           HERO SECTION (Dynamic Background)
+           HERO SECTION
            -------------------------------------------------- */
         #hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
-            text-align: center;
             overflow: hidden;
+            padding: 140px 20px 80px 20px;
         }
 
-        /* Dynamic Orb Background */
         .orb {
             position: absolute;
             border-radius: 50%;
@@ -232,7 +262,7 @@
             animation: orbFloat 10s infinite alternate var(--easing);
         }
 
-        .orb-1 { width: 300px; height: 300px; background: #ff4c4c; top: 20%; left: 20%; animation-delay: 0s; }
+        .orb-1 { width: 300px; height: 300px; background: #ff4c4c; top: 20%; left: 20%; }
         .orb-2 { width: 400px; height: 400px; background: #ffcccc; bottom: 10%; right: 10%; animation-delay: -5s; }
 
         @keyframes orbFloat {
@@ -240,36 +270,76 @@
             100% { transform: translate(30px, 50px) scale(1.2); }
         }
 
-        .hero-content {
+        .hero-container {
             z-index: 1;
-            padding: 0 20px;
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 60px;
+            align-items: center;
+            text-align: left;
+        }
+
+        .hero-image-side {
+            width: 100%;
+            height: 580px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeIn 1.2s var(--easing) forwards 0.3s;
+        }
+
+        .hero-image-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-text-side {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeIn 1.2s var(--easing) forwards 0.6s;
         }
 
         #hero h1 {
-            font-size: clamp(3rem, 10vw, 8rem); /* Massive responsive text */
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(255,255,255,0.8));
-            opacity: 0;
-            animation: heroTextReveal 1.5s var(--easing) forwards 0.5s;
+            font-size: clamp(2.2rem, 4vw, 3.8rem);
+            line-height: 1.15;
+            font-weight: 800;
         }
 
-        #hero p {
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-            opacity: 0;
-            animation: heroTextReveal 1.5s var(--easing) forwards 1s;
+        .hero-cta-btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border: 1px solid #1d1d1f;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            background: transparent;
+            transition: all 0.3s var(--easing);
         }
 
-        @keyframes heroTextReveal {
-            from { transform: translateY(50px) scale(0.9); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
+        .hero-cta-btn:hover {
+            background: #1d1d1f;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        @keyframes heroFadeIn {
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .scroll-pill {
             position: absolute;
-            bottom: 40px;
+            bottom: 25px;
             width: 30px;
             height: 50px;
             border: 2px solid rgba(0,0,0,0.15);
@@ -277,6 +347,8 @@
             z-index: 2;
             opacity: 0;
             animation: fadeIn 1s ease forwards 2s;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .scroll-pill::before {
@@ -297,8 +369,15 @@
             100% { top: 25px; opacity: 0; }
         }
 
+        @media (max-width: 768px) {
+            #hero { padding-top: 110px; }
+            .hero-container { grid-template-columns: 1fr; gap: 40px; }
+            .hero-image-side { height: 420px; }
+            .scroll-pill { display: none; }
+        }
+
         /* --------------------------------------------------
-           ABOUT SECTION (Apple Style Reveal)
+           ABOUT SECTION
            -------------------------------------------------- */
         #about {
             padding: 150px 20px;
@@ -311,14 +390,13 @@
             font-size: clamp(1.5rem, 4vw, 3rem);
             font-weight: 600;
             line-height: 1.4;
-            color: #e0e0e0; /* Start dim */
+            color: #e0e0e0;
             transition: color 0.5s;
         }
         
-        /* The span trick for scroll revealing text */
         .reveal-text span {
             color: #e0e0e0;
-            transition: color 0.3s ease;
+            transition: color 0.2s ease;
         }
         .reveal-text span.active {
             color: #1d1d1f;
@@ -329,12 +407,16 @@
             margin-top: 50px;
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 30px;
         }
 
         .social-icon {
             color: var(--text-primary);
             transition: transform 0.4s var(--easing), color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .social-icon:hover {
             color: var(--accent-color);
@@ -342,30 +424,24 @@
         }
         
         /* --------------------------------------------------
-           PORTFOLIO (Clean Grid Layout)
+           PORTFOLIO GRID
            -------------------------------------------------- */
         #portfolio {
             padding: 100px 20px;
             max-width: 1400px;
             margin: 0 auto;
         }
-        /* Ensure the Portfolio heading is prominent */
+        
         #portfolio .section-header {
-            grid-column: 1 / -1; /* Makes header span across all grid columns */
-            text-align: left;    /* Optional: 'left' often looks more high-end in grids */
-            font-size: clamp(3rem, 8vw, 6rem); /* Matches your big hero typography */
+            grid-column: 1 / -1;
+            text-align: left;
+            font-size: clamp(3rem, 8vw, 6rem);
             margin-bottom: 60px;
             padding-left: 10px;
         }
 
-        /* Add a subtle fade-in for the heading specifically */
-        .section-header.visible {
-            animation: heroTextReveal 1.2s var(--easing) forwards;
-        }
-
         .gallery-wrapper {
             display: grid;
-            /* Creates a responsive grid: 1 col on mobile, 2 on tablet, 3 on desktop */
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 25px;
             padding: 0;
@@ -373,18 +449,11 @@
 
         .card-container {
             position: relative;
-            height: 450px; /* Fixed height for a uniform grid */
+            height: 450px;
             border-radius: 20px;
             overflow: hidden;
             background: var(--surface-color);
             transition: transform 0.4s var(--easing);
-        }
-
-        /* Remove the old sticky logic z-index and top offsets */
-        .card-container:nth-child(n) {
-            top: auto;
-            z-index: 1;
-            margin-bottom: 0;
         }
 
         .card {
@@ -403,64 +472,119 @@
             transform: scale(1.08);
         }
 
-        /* Optional: Make every 3rd or 4th image "Featured" (wider) on large screens */
         @media (min-width: 1024px) {
             .card-container:nth-child(5n+1) {
                 grid-column: span 2;
             }
         }
 
+        @media (max-width: 768px) {
+            #portfolio {
+                padding: 60px 12px;
+            }
+            .gallery-wrapper {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .card-container {
+                height: 240px;
+                border-radius: 12px;
+            }
+        }
+
         /* --------------------------------------------------
-           GEAR SECTION (Floating 3D Cards)
+           GEAR SECTION (THE ARSENAL)
            -------------------------------------------------- */
         #gear {
             padding: 100px 20px;
             background: radial-gradient(circle at 50% 50%, #fafafa 0%, #ffffff 100%);
         }
 
-        .gear-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
+        .gear-container-responsive {
             max-width: 1200px;
             margin: 50px auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 25px;
+            align-items: stretch;
         }
 
         .gear-card {
             background: rgba(0,0,0,0.02);
             border: 1px solid rgba(0,0,0,0.04);
             border-radius: 24px;
-            padding: 30px;
+            padding: 40px 24px;
             text-align: center;
             transition: all 0.4s var(--easing);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gear-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            background: rgba(0,0,0,0.04);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            border-color: var(--accent-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .gear-card img {
-            width: 80%;
+            max-width: 80%;
             height: auto;
             border-radius: 12px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.08));
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.08));
             transition: transform 0.4s ease;
         }
 
-        .gear-card:hover img {
-            transform: scale(1.1) rotate(2deg);
+        .gear-card.camera-spotlight img {
+            width: 260px;
+        }
+
+        .gear-card.lens-accessory img {
+            width: 160px;
         }
 
         .gear-card h3 {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--text-primary);
-            margin-top: 10px;
+            margin-top: auto;
+        }
+
+        .gear-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(0,0,0,0.04);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border-color: var(--accent-color);
+        }
+
+        .gear-card:hover img {
+            transform: scale(1.06) rotate(2deg);
+        }
+
+        @media (max-width: 768px) {
+            .gear-container-responsive {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .gear-card.camera-spotlight {
+                grid-column: span 2;
+                padding: 40px 20px;
+            }
+
+            .gear-card.camera-spotlight img {
+                width: 220px;
+            }
+
+            .gear-card.lens-accessory {
+                aspect-ratio: 1 / 1;
+                padding: 15px;
+            }
+
+            .gear-card.lens-accessory img {
+                width: 110px;
+                max-width: 90%;
+                margin-bottom: 10px;
+            }
+
+            .gear-card.lens-accessory h3 {
+                font-size: 0.9rem;
+            }
         }
 
         /* --------------------------------------------------
@@ -514,7 +638,6 @@
             box-shadow: 0 0 0 2px var(--accent-color);
         }
 
-        /* Magnetic Button */
         .magnetic-btn {
             display: inline-block;
             background: var(--accent-color);
@@ -541,14 +664,8 @@
             transition: 0.5s;
         }
         
-        .magnetic-btn:hover::after {
-            left: 100%;
-        }
-
-        .magnetic-btn.success {
-            background: #25D366;
-            transform: scale(0.98);
-        }
+        .magnetic-btn:hover::after { left: 100%; }
+        .magnetic-btn.success { background: #25D366; transform: scale(0.98); }
 
         .service-toggle {
             display: flex;
@@ -573,101 +690,21 @@
         }
 
         .toggle-btn.active {
-            background: var(--accent-color); /* Your Red */
+            background: var(--accent-color);
             border-color: var(--accent-color);
             color: #fff;
             box-shadow: 0 0 15px rgba(255, 76, 76, 0.3);
         }
 
-        .toggle-btn:hover:not(.active) {
-            background: rgba(0, 0, 0, 0.06);
-        }
+        .toggle-btn:hover:not(.active) { background: rgba(0, 0, 0, 0.06); }
 
         @media (max-width: 480px) {
-            .service-toggle {
-                flex-direction: column;
-            }
+            .service-toggle { flex-direction: column; }
         }
 
         /* --------------------------------------------------
-           BUY SECTION
+           CANVAS SECTION
            -------------------------------------------------- */
-        #buy {
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        .buy-link {
-            display: inline-block;
-            padding: 18px 36px;
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: all 0.4s var(--easing);
-            background: rgba(0,0,0,0.02);
-        }
-
-        .buy-link:hover {
-            background: #000;
-            color: #fff;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        /* --------------------------------------------------
-           LIGHTBOX
-           -------------------------------------------------- */
-        .lightbox {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(10px);
-            z-index: 9999;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .lightbox.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .lightbox img {
-            max-width: 90%;
-            max-height: 85vh;
-            border-radius: 12px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.1);
-            transform: scale(0.8);
-            transition: transform 0.4s var(--easing);
-        }
-
-        .lightbox.active img {
-            transform: scale(1);
-        }
-
-        .close-lb {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            color: var(--text-primary);
-            font-size: 2rem;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .close-lb:hover { transform: rotate(90deg); }
-
-        footer {
-            padding: 40px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #a1a1a6;
-            border-top: 1px solid #f5f5f7;
-        }
-		
         #canvas-orders {
             padding: 100px 20px;
             text-align: center;
@@ -689,6 +726,7 @@
             padding: 50px 30px;
             transition: all 0.4s var(--easing);
             position: relative;
+            cursor: pointer;
         }
 
         .canvas-card:hover {
@@ -698,36 +736,34 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.04);
         }
 
-        .canvas-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+        .canvas-card h3 { font-size: 1.8rem; margin-bottom: 10px; }
+        .canvas-card .dimensions { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 25px; letter-spacing: 0.05em; }
+        .canvas-card .price { font-size: 2.5rem; font-weight: 800; color: var(--text-primary); }
+        .size-tag { position: absolute; top: 20px; right: 20px; background: var(--accent-color); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; }
+
+        /* --------------------------------------------------
+           LIGHTBOX
+           -------------------------------------------------- */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .canvas-card .dimensions {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-            letter-spacing: 0.05em;
-        }
+        .lightbox.active { display: flex; opacity: 1; }
+        .lightbox img { max-width: 90%; max-height: 85vh; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.1); transform: scale(0.8); transition: transform 0.4s var(--easing); }
+        .lightbox.active img { transform: scale(1); }
+        .close-lb { position: absolute; top: 30px; right: 30px; color: var(--text-primary); font-size: 2rem; cursor: pointer; transition: transform 0.3s; }
+        .close-lb:hover { transform: rotate(90deg); }
 
-        .canvas-card .price {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        .size-tag {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--accent-color);
-            color: #fff;
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 5px 12px;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
+        footer { padding: 40px; text-align: center; font-size: 0.8rem; color: #a1a1a6; border-top: 1px solid #f5f5f7; }
 
     </style>
 </head>
@@ -746,9 +782,11 @@
                 <a href="#canvas-orders" style="color: var(--accent-color);">Canvas Prints</a>
             </div>
 
-            <div class="mobile-toggle" id="menuBtn">
-                &#9776;
-            </div>
+            <button class="mobile-toggle" id="menuBtn" aria-label="Toggle Navigation Grid Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </div>
 
@@ -756,117 +794,100 @@
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         
-        <div class="hero-content">
-            <h1 class="flow-text">Igor Rix</h1>
-            <p>Capturing the adrenaline of motorsports and the silence of nature.</p>
+        <div class="hero-container">
+            <div class="hero-image-side">
+                <img src="image_428127.jpg" alt="Igor Rix Portrait">
+            </div>
+            <div class="hero-text-side">
+                <h1 class="flow-text">Hi, I'm Igor - a photographer and content creator.</h1>
+                <a href="#portfolio" class="hero-cta-btn custom-scroll-trigger">View gallery</a>
+            </div>
         </div>
-
         <div class="scroll-pill"></div>
     </section>
 
     <section id="about">
-        <h2 class="fade-up flow-text">The Philosophy</h2>
+        <h2 class="dynamic-bounce-up flow-text">The Philosophy</h2>
         <br>
         <p class="reveal-text" id="revealText">
             Photography is not about the camera. It is about freezing a split second of time that will never happen again. From the roar of an engine on the track to the quiet gaze of a predator in the bush, I strive to tell stories without words.
         </p>
         
-        <div class="social-row fade-up">
-            <a href="https://www.instagram.com/_ir.photo_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Zm4.75-.88a.88.88 0 1 1 0 1.75a.88.88 0 0 1 0-1.75Z"/></svg>
+        <div class="social-row dynamic-bounce-up">
+            <a href="https://www.instagram.com/_ir.photo_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-icon" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Zm4.75-.88a.88.88 0 1 1 0 1.75a.88.88 0 0 1 0-1.75Z"/></svg>
             </a>
-            <a href="https://www.tiktok.com/@_ir.photo_?is_from_webapp=1&sender_device=pc" target="_blank" class="social-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 24 24"><path d="M12.999 2c.169 3.83 2.025 6.019 5.356 6.248V10.8a8.47 8.47 0 0 1-4.353-1.19v6.413c0 7.623-8.241 9.23-11.094 3.323a5.568 5.568 0 0 1 5.473-8.173v2.889c-.306.027-.612.084-.913.176c-1.902.585-2.385 2.939-1.265 4.282c1.205 1.445 3.786 1.034 4.186-1.069c.07-.355.1-.727.1-1.135V2h2.51Z"/></svg>
+            <a href="https://www.tiktok.com/@_ir.photo_?is_from_webapp=1&sender_device=pc" target="_blank" class="social-icon" aria-label="TikTok">
+                <!-- Symmetrically uniform minimal TikTok SVG built to align perfectly with the Instagram styling -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.5 2v13.5a3.5 3.5 0 1 1-3.5-3.5c.3 0 .6.04.9.12V9.04a6.5 6.5 0 1 0 5.6 6.46V7a5.5 5.5 0 0 0 4.5 5.4V9.3a2.5 2.5 0 0 1-4-2.3V2h-3.5z"/>
+                </svg>
             </a>
         </div>
     </section>
 
     <section id="portfolio">
-        <h2 class="section-header flow-text fade-up"></h2>
+        <h2 class="section-header flow-text dynamic-bounce-up">Work</h2>
         <div class="gallery-wrapper">
-            
-            <div class="card-container fade-up">
-                <div class="card">
-                    <img src="https://i.postimg.cc/15GpDYv1/IR-4799.jpg" alt="Work 1">
-                    <div class="card-overlay"><h3>Wildlife Portraiture</h3></div>
-                </div>
+            <div class="card-container dynamic-bounce-up">
+                <div class="card"><img src="https://i.postimg.cc/15GpDYv1/IR-4799.jpg" alt="Work 1"></div>
             </div>
-
-            <div class="card-container fade-up">
-                <div class="card">
-                    <img src="https://i.postimg.cc/VLqjXHDX/IR-3245.jpg" alt="Work 2">
-                </div>
+            <div class="card-container dynamic-bounce-up">
+                <div class="card"><img src="https://i.postimg.cc/VLqjXHDX/IR-3245.jpg" alt="Work 2"></div>
             </div>
-
-            <div class="card-container fade-up">
-                <div class="card">
-                    <img src="https://i.postimg.cc/4N6zpFBS/IR-4164.jpg" alt="Work 3">
-                </div>
+            <div class="card-container dynamic-bounce-up">
+                <div class="card"><img src="https://i.postimg.cc/4N6zpFBS/IR-4164.jpg" alt="Work 3"></div>
             </div>
-
-            <div class="card-container fade-up">
-                <div class="card">
-                    <img src="https://i.postimg.cc/MGTPP8Lx/IMG-4481.jpg" alt="Work 4">
-                </div>
+            <div class="card-container dynamic-bounce-up">
+                <div class="card"><img src="https://i.postimg.cc/MGTPP8Lx/IMG-4481.jpg" alt="Work 4"></div>
             </div>
-            
-            <div class="card-container fade-up">
-                <div class="card">
-                    <img src="https://i.postimg.cc/MpXv5Y5Q/2-IR-1179.jpg" alt="Work 5">
-                </div>
+            <div class="card-container dynamic-bounce-up">
+                <div class="card"><img src="https://i.postimg.cc/MpXv5Y5Q/2-IR-1179.jpg" alt="Work 5"></div>
             </div>
-
-            <div class="card-container fade-up">
-                <div class="card">
-                    <img src="https://i.postimg.cc/PqR60RGf/IR-4187.jpg" alt="Work 6">
-                </div>
+            <div class="card-container dynamic-bounce-up">
+                <div class="card"><img src="https://i.postimg.cc/PqR60RGf/IR-4187.jpg" alt="Work 6"></div>
             </div>
-
-            <div class="card-container fade-up">
-                <div class="card">
-                    <img src="https://i.postimg.cc/dQGhN0Q6/1_IR_2367.jpg" alt="Work 7">
-                </div>
+            <div class="card-container dynamic-bounce-up">
+                <div class="card"><img src="https://i.postimg.cc/dQGhN0Q6/1_IR_2367.jpg" alt="Work 7"></div>
             </div>
-
-            <div class="card-container fade-up">
-                <div class="card">
-                    <img src="https://i.postimg.cc/CMbRrKM6/2_IR_2160.jpg" alt="Work 8">
-                </div>
+            <div class="card-container dynamic-bounce-up">
+                <div class="card"><img src="https://i.postimg.cc/CMbRrKM6/2_IR_2160.jpg" alt="Work 8"></div>
             </div>
-
         </div>
     </section>
 
     <section id="gear">
-        <h2 class="fade-up flow-text">The Arsenal</h2>
-        <div class="gear-grid">
-            
-            <div class="gear-card fade-up">
+        <h2 class="dynamic-bounce-up flow-text">The Arsenal</h2>
+        
+        <div class="gear-container-responsive">
+            <!-- Camera Body Module -->
+            <div class="gear-card camera-spotlight dynamic-bounce-up">
                 <a href="https://www.sony.com/za/interchangeable-lens-cameras/products/ilce-6400" target="_blank">
                     <img src="https://i.postimg.cc/4xhJQGfN/sony-a6400.webp" alt="Sony a6400">
                     <h3>Sony a6400 Body</h3>
                 </a>
             </div>
 
-            <div class="gear-card fade-up">
+            <!-- Lens Optics Box 1 -->
+            <div class="gear-card lens-accessory dynamic-bounce-up">
                 <a href="https://www.sony.com/za/electronics/interchangeable-lenses/selp16502" target="_blank">
                     <img src="https://i.postimg.cc/13CySzvC/16-50.png" alt="Lens">
                     <h3>E PZ 16-50mm F3.5-5.6</h3>
                 </a>
             </div>
-
-            <div class="gear-card fade-up">
+            
+            <!-- Lens Optics Box 2 -->
+            <div class="gear-card lens-accessory dynamic-bounce-up">
                 <a href="https://www.tamron.com/global/consumer/lenses/a047/photo.html" target="_blank">
                     <img src="https://i.postimg.cc/zvck5KRS/tamron.png" alt="Lens">
                     <h3>Tamron 70-300mm RXD</h3>
                 </a>
             </div>
-
         </div>
     </section>
 
     <section id="contact">
-        <div class="contact-container fade-up">
+        <div class="contact-container dynamic-bounce-up">
             <form id="whatsappForm">
                 <div class="form-group">
                     <div class="service-toggle">
@@ -895,33 +916,33 @@
     </section>
 	
 	<section id="canvas-orders">
-        <h2 class="fade-up flow-text section-header">Canvas Prints</h2>
-        <p class="fade-up" style="color: var(--text-secondary); text-align: center; margin-bottom: 40px;">
+        <h2 class="dynamic-bounce-up flow-text section-header">Canvas Prints</h2>
+        <p class="dynamic-bounce-up" style="color: var(--text-secondary); text-align: center; margin-bottom: 40px;">
             High-quality gallery wraps. Printed with archival inks on premium canvas.
         </p>
 
         <div class="canvas-grid">
-            <div class="canvas-card fade-up">
+            <div class="canvas-card dynamic-bounce-up" data-size="A3">
                 <h3>A3 Canvas</h3>
                 <p class="dimensions">297 x 420 mm</p>
                 <div class="price">R650</div>
             </div>
 
-            <div class="canvas-card fade-up">
+            <div class="canvas-card dynamic-bounce-up" data-size="A2">
                 <div class="size-tag">Most Popular</div>
                 <h3>A2 Canvas</h3>
                 <p class="dimensions">420 x 594 mm</p>
                 <div class="price">R950</div>
             </div>
 
-            <div class="canvas-card fade-up">
+            <div class="canvas-card dynamic-bounce-up" data-size="A1">
                 <h3>A1 Canvas</h3>
                 <p class="dimensions">594 x 841 mm</p>
                 <div class="price">R1,500</div>
             </div>
         </div>
         
-        <p class="fade-up" style="color: var(--text-secondary); margin-top: 30px; font-size: 0.9rem;">
+        <p class="dynamic-bounce-up" style="color: var(--text-secondary); margin-top: 30px; font-size: 0.9rem;">
             *Delivery not included in price. Pickup Available in Stellenbosch
         </p>
     </section>
@@ -936,23 +957,21 @@
     </div>
 
     <script>
-        // 1. SCROLL OBSERVER (Animations on Scroll)
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+        // 1. INFINITE DYNAMIC BOUNCE INTERSECTION OBSERVER (Triggers on scroll down AND scroll back up)
+        const observerOptions = { threshold: 0.02, rootMargin: "0px 0px -20px 0px" };
+        const bounceObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { 
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    entry.target.classList.add('visible'); 
+                } else {
+                    // Pulls class off when element disappears from vision context window so it can re-trigger
+                    entry.target.classList.remove('visible');
                 }
             });
         }, observerOptions);
+        document.querySelectorAll('.dynamic-bounce-up').forEach(el => bounceObserver.observe(el));
 
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-        // 2. TEXT REVEAL EFFECT (Word by Word Opacity)
+        // 2. EXTRA EARLY CALIBRATED TEXT REVEAL ENGINE
         const textElement = document.getElementById('revealText');
         if(textElement) {
             const words = textElement.innerText.split(' ');
@@ -969,17 +988,13 @@
                 const sectionTop = document.getElementById('about').offsetTop;
                 const sectionHeight = document.getElementById('about').offsetHeight;
                 
-                // Calculate percentage through the section
-                let percentage = (scrollPos - sectionTop + 300) / (sectionHeight);
-                
+                // Offset boosted up to +750 to phase words to black even earlier
+                let percentage = (scrollPos - sectionTop + 750) / (sectionHeight);
                 let activeCount = Math.floor(percentage * spans.length);
                 
                 spans.forEach((span, index) => {
-                    if (index < activeCount) {
-                        span.classList.add('active');
-                    } else {
-                        span.classList.remove('active');
-                    }
+                    if (index < activeCount) span.classList.add('active');
+                    else span.classList.remove('active');
                 });
             });
         }
@@ -991,23 +1006,62 @@
                 const pos = btn.getBoundingClientRect();
                 const x = e.clientX - pos.left - pos.width / 2;
                 const y = e.clientY - pos.top - pos.height / 2;
-                
                 btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
             });
-
-            btn.addEventListener('mouseleave', function() {
-                btn.style.transform = 'translate(0px, 0px)';
-            });
+            btn.addEventListener('mouseleave', function() { btn.style.transform = 'translate(0px, 0px)'; });
         });
 
-        // 4. MOBILE MENU TOGGLE
+        // 4. SMOOTH SCROLL ENGINE
+        function executePremiumSmoothScroll(targetSelector) {
+            const element = document.querySelector(targetSelector);
+            if (!element) return;
+            
+            const targetPosition = element.getBoundingClientRect().top + window.scrollY;
+            const startPosition = window.scrollY;
+            const distance = targetPosition - startPosition - 80; 
+            const duration = 1100; 
+            let startTimestamp = null;
+
+            function quinticEaseInOut(t, b, c, d) {
+                if ((t /= d / 2) < 1) return c / 2 * t * t * t * t * t + b;
+                return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
+            }
+
+            function scrollStepAnimation(currentTimestamp) {
+                if (!startTimestamp) startTimestamp = currentTimestamp;
+                const elapsed = currentTimestamp - startTimestamp;
+                const stepScrollPosition = quinticEaseInOut(elapsed, startPosition, distance, duration);
+                
+                window.scrollTo(0, stepScrollPosition);
+                
+                if (elapsed < duration) {
+                    window.requestAnimationFrame(scrollStepAnimation);
+                } else {
+                    window.scrollTo(0, targetPosition - 80); 
+                }
+            }
+            window.requestAnimationFrame(scrollStepAnimation);
+        }
+
         const menuBtn = document.getElementById('menuBtn');
         const navLinks = document.getElementById('navLinks');
         
         menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('open');
             navLinks.classList.toggle('open');
-            // Animate hamburger to X (simple implementation)
-            menuBtn.innerHTML = navLinks.classList.contains('open') ? '&times;' : '&#9776;';
+        });
+
+        document.querySelectorAll('.nav-links a, .custom-scroll-trigger').forEach(triggerLink => {
+            triggerLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                const targetHashId = triggerLink.getAttribute('href');
+                
+                if (navLinks.classList.contains('open')) {
+                    menuBtn.classList.remove('open');
+                    navLinks.classList.remove('open');
+                }
+                executePremiumSmoothScroll(targetHashId);
+            });
         });
 
         // 5. LIGHTBOX LOGIC
@@ -1020,7 +1074,7 @@
             img.addEventListener('click', () => {
                 lbImg.src = img.src;
                 lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Stop scrolling
+                document.body.style.overflow = 'hidden';
             });
         });
 
@@ -1028,41 +1082,41 @@
             lightbox.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-
         closeLb.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', (e) => {
-            if(e.target === lightbox) closeLightbox();
-        });
+        lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
 
-        // 6. WHATSAPP FORM LOGIC (Preserved)
+        // 6. FORM LOGIC & CANVAS PRINT INTERACTION SYNC
         const form = document.getElementById("whatsappForm");
         const button = document.getElementById("whatsappBtn");
-        const serviceSelect = document.getElementById("serviceSelect");
-        const contactMessage = document.getElementById("contactMessage");
-
-        // Handle Service Toggle Buttons
         const toggleBtns = document.querySelectorAll('.toggle-btn');
         const hiddenInput = document.getElementById('selectedService');
-        const messageArea = document.querySelector('textarea[name="message"]');
+        const messageArea = document.getElementById('contactMessage');
+
+        function updateFormSelection(value) {
+            toggleBtns.forEach(b => {
+                if(b.getAttribute('data-value') === value) b.classList.add('active');
+                else b.classList.remove('active');
+            });
+            hiddenInput.value = value;
+        }
 
         toggleBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove active class from all and add to clicked
-                toggleBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Update hidden input value
                 const val = btn.getAttribute('data-value');
-                hiddenInput.value = val;
+                updateFormSelection(val);
+                if(val === 'Canvas') messageArea.value = "Hi Igor, I am interested in purchasing a Canvas Print.";
+                else messageArea.value = "";
+            });
+        });
 
-                // Change placeholder dynamically
-                if(val === 'Canvas') {
-                    messageArea.placeholder = "Which image and size (A3, A2, A1) are you interested in?";
-                } else if (val === 'Shoot') {
-                    messageArea.placeholder = "Tell me about your vision...";
-                } else {
-                    messageArea.placeholder = "How can I help?";
-                }
+        const canvasCards = document.querySelectorAll('.canvas-card');
+        canvasCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const selectedSize = card.getAttribute('data-size');
+                updateFormSelection('Canvas');
+                messageArea.value = `Hi Igor, I would love to order an ${selectedSize} canvas print of one of your shots! Please let me know how to proceed.`;
+                executePremiumSmoothScroll('#contact');
+                messageArea.focus();
             });
         });
 
@@ -1074,27 +1128,22 @@
             const message = form.message.value.trim();
             const phoneNumber = "27619280584";
 
-            // Build specialized subject lines
-            let subjectLine = service === "Canvas" 
-                ? "I’d like to order a Canvas Print" 
-                : "I’d like to book a private shoot";
-
-            const text = `Hi Igor, ${subjectLine}.\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+            let subjectLine = service === "Canvas" ? "Canvas Print Order Inquiry" : "Private Shoot Booking Inquiry";
+            const text = `Hi Igor, Regarding: ${subjectLine}.\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
             const encoded = encodeURIComponent(text);
             const url = `https://wa.me/${phoneNumber}?text=${encoded}`;
 
             button.classList.add("success");
             button.textContent = "Opening WhatsApp...";
-
             window.open(url, "_blank");
 
             setTimeout(() => {
                 button.classList.remove("success");
-                button.textContent = "Initiate via WhatsApp";
+                button.textContent = "Message via WhatsApp";
                 form.reset();
+                updateFormSelection('Shoot');
             }, 3000);
         });
-
     </script>
 </body>
 </html>
