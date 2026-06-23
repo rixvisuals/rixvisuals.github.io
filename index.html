@@ -18,7 +18,7 @@
             --accent-glow: rgba(255, 76, 76, 0.2);
             --text-primary: #1d1d1f;
             --text-secondary: #86868b;
-            --easing: cubic-bezier(0.165, 0.84, 0.44, 1);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1); /* Ultra slick, smooth decelerating ease */
             --apple-ease: cubic-bezier(0.25, 1, 0.5, 1);
             --apple-spring: cubic-bezier(0.68, -0.6, 0.32, 1.6);
             --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -101,19 +101,19 @@
         }
 
         /* 
-           Clean layout animation to prevent bounce-back 
-           stuttering and glitching on mobile scroll-up.
+           Lando Norris-Style Dynamic Scroll Entry
+           Uses long durations with deep easing for that luxury slow-motion look.
         */
         .dynamic-fade-in-up {
             opacity: 0;
-            transform: translateY(25px);
-            transition: opacity 0.7s var(--apple-ease), transform 0.7s var(--apple-ease);
+            transform: translateY(70px) scale(0.97);
+            transition: opacity 1.4s var(--easing), transform 1.4s var(--easing);
             will-change: transform, opacity;
         }
 
         .dynamic-fade-in-up.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         /* --------------------------------------------------
@@ -312,8 +312,8 @@
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.06);
             opacity: 0;
-            transform: translateY(30px);
-            animation: heroFadeIn 1.2s var(--easing) forwards 0.3s;
+            transform: translateY(40px);
+            animation: heroFadeIn 1.5s var(--easing) forwards 0.2s;
         }
 
         .hero-image-side img {
@@ -328,8 +328,8 @@
             align-items: flex-start;
             gap: 30px;
             opacity: 0;
-            transform: translateY(30px);
-            animation: heroFadeIn 1.2s var(--easing) forwards 0.6s;
+            transform: translateY(40px);
+            animation: heroFadeIn 1.5s var(--easing) forwards 0.4s;
         }
 
         #hero h1 {
@@ -479,6 +479,7 @@
             overflow: hidden;
             background: var(--surface-color);
             transition: transform 0.4s var(--easing);
+            cursor: pointer;
         }
 
         .card {
@@ -494,7 +495,7 @@
         }
 
         .card:hover img {
-            transform: scale(1.08);
+            transform: scale(1.04);
         }
 
         @media (min-width: 1024px) {
@@ -530,7 +531,6 @@
             text-align: left;
         }
 
-        /* Standard Desktop Layout */
         .gear-container-responsive {
             max-width: 1200px;
             margin: 50px auto;
@@ -563,19 +563,9 @@
             transition: transform 0.4s ease;
         }
 
-        .gear-card.camera-spotlight img {
-            width: 260px;
-        }
-
-        .gear-card.lens-accessory img {
-            width: 160px;
-        }
-
-        .gear-card h3 {
-            font-size: 1.15rem;
-            color: var(--text-primary);
-            margin-top: auto;
-        }
+        .gear-card.camera-spotlight img { width: 260px; }
+        .gear-card.lens-accessory img { width: 160px; }
+        .gear-card h3 { font-size: 1.15rem; color: var(--text-primary); margin-top: auto; }
 
         .gear-card:hover {
             transform: translateY(-10px) scale(1.02);
@@ -584,53 +574,20 @@
             border-color: var(--accent-color);
         }
 
-        .gear-card:hover img {
-            transform: scale(1.06) rotate(2deg);
-        }
+        .gear-card:hover img { transform: scale(1.06) rotate(2deg); }
 
-        /* 
-           Fixed iOS/Mobile Multi-Row structure
-           Row 1: Full-width Spotlight Camera
-           Row 2: Two Lenses perfectly split side-by-side
-        */
         @media (max-width: 768px) {
-            #gear {
-                padding: 60px 16px;
-            }
-
+            #gear { padding: 60px 16px; }
             .gear-container-responsive {
-                display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 16px;
                 margin: 30px auto;
-                width: 100%;
             }
-
-            .gear-card.camera-spotlight {
-                grid-column: span 2; /* Takes up full top row width */
-                padding: 35px 20px;
-            }
-
-            .gear-card.lens-accessory {
-                grid-column: span 1; /* Splits second row into 2 clean columns side-by-side */
-                padding: 25px 12px;
-            }
-
-            .gear-card.camera-spotlight img {
-                width: 160px;
-                max-width: 90%;
-            }
-
-            .gear-card.lens-accessory img {
-                width: 100px;
-                max-width: 90%;
-                margin-bottom: 12px;
-            }
-
-            .gear-card h3 {
-                font-size: 0.9rem;
-                margin-top: 8px;
-            }
+            .gear-card.camera-spotlight { grid-column: span 2; padding: 35px 20px; }
+            .gear-card.lens-accessory { grid-column: span 1; padding: 25px 12px; }
+            .gear-card.camera-spotlight img { width: 160px; max-width: 90%; }
+            .gear-card.lens-accessory img { width: 100px; max-width: 90%; margin-bottom: 12px; }
+            .gear-card h3 { font-size: 0.9rem; margin-top: 8px; }
         }
 
         /* --------------------------------------------------
@@ -655,171 +612,156 @@
             width: 100%;
         }
 
-        .form-group {
-            position: relative;
-            margin-bottom: 20px;
-            overflow: hidden;
+        .form-group { position: relative; margin-bottom: 20px; overflow: hidden; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 20px; background: rgba(0,0,0,0.03); border: none; border-radius: 16px;
+            color: var(--text-primary); font-family: inherit; font-size: 1rem; transition: all 0.3s ease;
         }
-
-        .form-group input, 
-        .form-group textarea {
-            width: 100%;
-            padding: 20px;
-            background: rgba(0,0,0,0.03);
-            border: none;
-            border-radius: 16px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #a1a1a6;
-        }
-
-        .form-group input:focus, 
-        .form-group textarea:focus {
-            outline: none;
-            background: rgba(0,0,0,0.05);
-            transform: scale(1.01);
-            box-shadow: 0 0 0 2px var(--accent-color);
-        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: #a1a1a6; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; background: rgba(0,0,0,0.05); transform: scale(1.01); box-shadow: 0 0 0 2px var(--accent-color); }
 
         .magnetic-btn {
-            display: inline-block;
-            background: var(--accent-color);
-            color: #fff;
-            font-weight: 700;
-            padding: 20px 40px;
-            border-radius: 50px;
-            border: none;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), background 0.3s;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            margin-top: 20px;
+            display: inline-block; background: var(--accent-color); color: #fff; font-weight: 700; padding: 20px 40px;
+            border-radius: 50px; border: none; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s var(--easing), background 0.3s;
+            position: relative; overflow: hidden; width: 100%; margin-top: 20px;
         }
 
         .magnetic-btn::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.5s;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: 0.5s;
         }
-        
         .magnetic-btn:hover::after { left: 100%; }
         .magnetic-btn.success { background: #25D366; transform: scale(0.98); }
 
-        .service-toggle {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
+        .service-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
         .toggle-btn {
-            flex: 1;
-            padding: 15px 5px;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            flex: 1; padding: 15px 5px; background: rgba(0, 0, 0, 0.03); border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px; color: var(--text-primary); font-family: 'Inter', sans-serif; font-weight: 600;
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease;
         }
-
-        .toggle-btn.active {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-            color: #fff;
-            box-shadow: 0 0 15px rgba(255, 76, 76, 0.3);
-        }
-
+        .toggle-btn.active { background: var(--accent-color); border-color: var(--accent-color); color: #fff; box-shadow: 0 0 15px rgba(255, 76, 76, 0.3); }
         .toggle-btn:hover:not(.active) { background: rgba(0, 0, 0, 0.06); }
 
-        @media (max-width: 480px) {
-            .service-toggle { flex-direction: column; }
-        }
+        @media (max-width: 480px) { .service-toggle { flex-direction: column; } }
 
         /* --------------------------------------------------
            CANVAS SECTION
            -------------------------------------------------- */
-        #canvas-orders {
-            padding: 100px 24px;
-            text-align: center;
-            background: linear-gradient(to bottom, #ffffff, #f5f5f7);
-            width: 100%;
-        }
-
-        #canvas-orders .section-header {
-            max-width: 1100px;
-            margin: 0 auto 20px auto;
-            text-align: left;
-        }
-
-        .canvas-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1100px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .canvas-card {
-            background: rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            border-radius: 24px;
-            padding: 50px 30px;
-            transition: all 0.4s var(--easing);
-            position: relative;
-            cursor: pointer;
-        }
-
-        .canvas-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-color);
-            background: rgba(255, 76, 76, 0.02);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
-        }
-
+        #canvas-orders { padding: 100px 24px; text-align: center; background: linear-gradient(to bottom, #ffffff, #f5f5f7); width: 100%; }
+        #canvas-orders .section-header { max-width: 1100px; margin: 0 auto 20px auto; text-align: left; }
+        .canvas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; width: 100%; }
+        .canvas-card { background: rgba(0, 0, 0, 0.02); border: 1px solid rgba(0, 0, 0, 0.04); border-radius: 24px; padding: 50px 30px; transition: all 0.4s var(--easing); position: relative; cursor: pointer; }
+        .canvas-card:hover { transform: translateY(-10px); border-color: var(--accent-color); background: rgba(255, 76, 76, 0.02); box-shadow: 0 20px 40px rgba(0,0,0,0.04); }
         .canvas-card h3 { font-size: 1.8rem; margin-bottom: 10px; }
         .canvas-card .dimensions { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 25px; letter-spacing: 0.05em; }
         .canvas-card .price { font-size: 2.5rem; font-weight: 800; color: var(--text-primary); }
         .size-tag { position: absolute; top: 20px; right: 20px; background: var(--accent-color); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; }
 
         /* --------------------------------------------------
-           LIGHTBOX
+           DYNAMIC FULLSCREEN LIGHTBOX SLIDER
            -------------------------------------------------- */
         .lightbox {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             z-index: 9999;
             display: none;
-            justify-content: center;
-            align-items: center;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s var(--easing);
         }
 
-        .lightbox.active { display: flex; opacity: 1; }
-        .lightbox img { max-width: 90%; max-height: 85vh; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.1); transform: scale(0.8); transition: transform 0.4s var(--easing); }
-        .lightbox.active img { transform: scale(1); }
-        .close-lb { position: absolute; top: 30px; right: 30px; color: var(--text-primary); font-size: 2rem; cursor: pointer; transition: transform 0.3s; }
+        .lightbox.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Continuous Horizontal Scroll Container for Images */
+        .lightbox-slider-track {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Hide Scrollbar for Lightbox view track */
+        .lightbox-slider-track::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+        .lightbox-slider-track { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .lightbox-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            scroll-snap-align: start;
+            padding: 40px;
+            position: relative;
+        }
+
+        .lightbox-slide img {
+            max-width: 92%;
+            max-height: 85vh;
+            border-radius: 16px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.08);
+            object-fit: contain;
+            transform: scale(0.92);
+            opacity: 0;
+            transition: transform 0.6s var(--easing), opacity 0.6s var(--easing);
+        }
+
+        .lightbox.active .lightbox-slide img {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .close-lb {
+            position: absolute;
+            top: 30px; right: 30px;
+            color: var(--text-primary);
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 10002;
+            transition: transform 0.3s;
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+        }
         .close-lb:hover { transform: rotate(90deg); }
+
+        /* Navigation Arrows for desktop sliders */
+        .lb-nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 54px;
+            height: 54px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            z-index: 10001;
+            transition: all 0.3s var(--easing);
+            user-select: none;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .lb-nav-arrow:hover { background: rgba(0,0,0,0.08); transform: translateY(-50%) scale(1.05); }
+        .lb-nav-arrow.prev { left: 30px; }
+        .lb-nav-arrow.next { right: 30px; }
+
+        @media (max-width: 768px) {
+            .lb-nav-arrow { display: none !important; } /* Depend on slick touch swiping on iOS */
+            .lightbox-slide { padding: 16px; }
+            .lightbox-slide img { max-width: 100%; max-height: 80vh; }
+        }
 
         footer { padding: 40px; text-align: center; font-size: 0.8rem; color: #a1a1a6; border-top: 1px solid #f5f5f7; width: 100%; }
 
@@ -854,7 +796,8 @@
         
         <div class="hero-container">
             <div class="hero-image-side">
-                <img src="image_428127.jpg" alt="Igor Rix Portrait">
+                <!-- Restored specific iOS High-Quality Portrait Asset Link -->
+                <img src="https://i.postimg.cc/3R2hbWZx/20251029-143504560-i-OS-1.jpg" alt="Igor Rix Portrait">
             </div>
             <div class="hero-text-side">
                 <h1 class="flow-text">Hi, I'm Igor - a photographer and content creator.</h1>
@@ -886,28 +829,28 @@
     <section id="portfolio">
         <h2 class="section-header flow-text dynamic-fade-in-up">Work</h2>
         <div class="gallery-wrapper">
-            <div class="card-container dynamic-fade-in-up">
+            <div class="card-container dynamic-fade-in-up" data-index="0">
                 <div class="card"><img src="https://i.postimg.cc/15GpDYv1/IR-4799.jpg" alt="Work 1"></div>
             </div>
-            <div class="card-container dynamic-fade-in-up">
+            <div class="card-container dynamic-fade-in-up" data-index="1">
                 <div class="card"><img src="https://i.postimg.cc/VLqjXHDX/IR-3245.jpg" alt="Work 2"></div>
             </div>
-            <div class="card-container dynamic-fade-in-up">
+            <div class="card-container dynamic-fade-in-up" data-index="2">
                 <div class="card"><img src="https://i.postimg.cc/4N6zpFBS/IR-4164.jpg" alt="Work 3"></div>
             </div>
-            <div class="card-container dynamic-fade-in-up">
+            <div class="card-container dynamic-fade-in-up" data-index="3">
                 <div class="card"><img src="https://i.postimg.cc/MGTPP8Lx/IMG-4481.jpg" alt="Work 4"></div>
             </div>
-            <div class="card-container dynamic-fade-in-up">
+            <div class="card-container dynamic-fade-in-up" data-index="4">
                 <div class="card"><img src="https://i.postimg.cc/MpXv5Y5Q/2-IR-1179.jpg" alt="Work 5"></div>
             </div>
-            <div class="card-container dynamic-fade-in-up">
+            <div class="card-container dynamic-fade-in-up" data-index="5">
                 <div class="card"><img src="https://i.postimg.cc/PqR60RGf/IR-4187.jpg" alt="Work 6"></div>
             </div>
-            <div class="card-container dynamic-fade-in-up">
+            <div class="card-container dynamic-fade-in-up" data-index="6">
                 <div class="card"><img src="https://i.postimg.cc/dQGhN0Q6/1_IR_2367.jpg" alt="Work 7"></div>
             </div>
-            <div class="card-container dynamic-fade-in-up">
+            <div class="card-container dynamic-fade-in-up" data-index="7">
                 <div class="card"><img src="https://i.postimg.cc/CMbRrKM6/2_IR_2160.jpg" alt="Work 8"></div>
             </div>
         </div>
@@ -917,7 +860,6 @@
         <h2 class="dynamic-fade-in-up flow-text">The Arsenal</h2>
         
         <div class="gear-container-responsive">
-            <!-- First Row (Full-width on mobile grid) -->
             <div class="gear-card camera-spotlight dynamic-fade-in-up">
                 <a href="https://www.sony.com/za/interchangeable-lens-cameras/products/ilce-6400" target="_blank">
                     <img src="https://i.postimg.cc/4xhJQGfN/sony-a6400.webp" alt="Sony a6400">
@@ -925,7 +867,6 @@
                 </a>
             </div>
 
-            <!-- Second Row (Splits side-by-side cleanly) -->
             <div class="gear-card lens-accessory dynamic-fade-in-up">
                 <a href="https://www.sony.com/za/electronics/interchangeable-lenses/selp16502" target="_blank">
                     <img src="https://i.postimg.cc/13CySzvC/16-50.png" alt="Lens">
@@ -1007,26 +948,38 @@
         &copy; 2026 Igor Rix Photography. Designed with Precision.
     </footer>
 
+    <!-- Fullscreen Landscape/Portrait Swipe Slider Lightbox Framework -->
     <div class="lightbox" id="lightbox">
         <div class="close-lb">&times;</div>
-        <img src="" alt="Expanded View">
+        <div class="lb-nav-arrow prev">&#10218;</div>
+        <div class="lb-nav-arrow next">&#10219;</div>
+        <div class="lightbox-slider-track" id="lightboxTrack">
+            <!-- Dynamic slides injected via JS -->
+        </div>
     </div>
 
     <script>
         /* 
-           Adjusted scroll triggers: elements reveal on downward movement 
-           and stay steadily layout-locked without shifting when scrolling up.
+           Lando Norris Style Observer Setup: 
+           Removes elements out of viewport when scrolling away so they play 
+           the smooth dynamic entry animation *again* every single time you return.
         */
-        const observerOptions = { threshold: 0.02, rootMargin: "0px 0px -10px 0px" };
+        const observerOptions = { threshold: 0.05, rootMargin: "0px 0px -40px 0px" };
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { 
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible'); 
+                } else {
+                    // Pull class off safely if scrolled completely away out of screen view 
+                    if(entry.boundingClientRect.top > window.innerHeight || entry.boundingClientRect.bottom < 0) {
+                        entry.target.classList.remove('visible');
+                    }
                 }
             });
         }, observerOptions);
         document.querySelectorAll('.dynamic-fade-in-up').forEach(el => scrollObserver.observe(el));
 
+        // Philosophy Text Reveal Logic
         const textElement = document.getElementById('revealText');
         if(textElement) {
             const words = textElement.innerText.split(' ');
@@ -1043,7 +996,7 @@
                 const sectionTop = document.getElementById('about').offsetTop;
                 const sectionHeight = document.getElementById('about').offsetHeight;
                 
-                let percentage = (scrollPos - sectionTop + 750) / (sectionHeight);
+                let percentage = (scrollPos - sectionTop + 600) / (sectionHeight);
                 let activeCount = Math.floor(percentage * spans.length);
                 
                 spans.forEach((span, index) => {
@@ -1053,6 +1006,7 @@
             });
         }
 
+        // Magnetic UI Buttons
         const btns = document.querySelectorAll('.magnetic-btn');
         btns.forEach(btn => {
             btn.addEventListener('mousemove', function(e) {
@@ -1064,6 +1018,7 @@
             btn.addEventListener('mouseleave', function() { btn.style.transform = 'translate(0px, 0px)'; });
         });
 
+        // Quintic Precision Smooth Scrolling Logic
         function executePremiumSmoothScroll(targetSelector) {
             const element = document.querySelector(targetSelector);
             if (!element) return;
@@ -1071,7 +1026,7 @@
             const targetPosition = element.getBoundingClientRect().top + window.scrollY;
             const startPosition = window.scrollY;
             const distance = targetPosition - startPosition - 80; 
-            const duration = 1100; 
+            const duration = 1200; 
             let startTimestamp = null;
 
             function quinticEaseInOut(t, b, c, d) {
@@ -1116,26 +1071,68 @@
             });
         });
 
+        /* --------------------------------------------------
+           LIGHTBOX SLIDER TRACK GENERATION & MECHANICS
+           -------------------------------------------------- */
         const lightbox = document.getElementById('lightbox');
-        const lbImg = lightbox.querySelector('img');
+        const lightboxTrack = document.getElementById('lightboxTrack');
         const closeLb = lightbox.querySelector('.close-lb');
-        const cards = document.querySelectorAll('.card img');
+        const prevBtn = lightbox.querySelector('.lb-nav-arrow.prev');
+        const nextBtn = lightbox.querySelector('.lb-nav-arrow.next');
+        const galleryCards = document.querySelectorAll('.card-container');
+        
+        // Dynamic construction of swipable slides array matching layout positions
+        galleryCards.forEach((cardContainer) => {
+            const originSrc = cardContainer.querySelector('img').src;
+            const originAlt = cardContainer.querySelector('img').alt;
+            
+            const slideNode = document.createElement('div');
+            slideNode.className = 'lightbox-slide';
+            
+            const imgNode = document.createElement('img');
+            imgNode.src = originSrc;
+            imgNode.alt = originAlt;
+            
+            slideNode.appendChild(imgNode);
+            lightboxTrack.appendChild(slideNode);
+        });
 
-        cards.forEach(img => {
-            img.addEventListener('click', () => {
-                lbImg.src = img.src;
+        // Launch full track viewport on card position clicked
+        galleryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const targetIdx = parseInt(card.getAttribute('data-index'));
                 lightbox.classList.add('active');
                 document.body.style.overflow = 'hidden';
+                
+                // Instantly snap to clicked index position before displaying animations
+                setTimeout(() => {
+                    const slideWidth = lightboxTrack.offsetWidth;
+                    lightboxTrack.scrollLeft = targetIdx * slideWidth;
+                }, 10);
             });
         });
 
         const closeLightbox = () => {
             lightbox.classList.remove('active');
             document.body.style.overflow = 'auto';
-        }
-        closeLb.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+        };
 
+        closeLb.addEventListener('click', closeLightbox);
+        
+        // Manual control click parameters for arrow navigation
+        nextBtn.addEventListener('click', () => {
+            lightboxTrack.scrollLeft += lightboxTrack.offsetWidth;
+        });
+        prevBtn.addEventListener('click', () => {
+            lightboxTrack.scrollLeft -= lightboxTrack.offsetWidth;
+        });
+
+        // Close when clicking empty blur regions around slider images 
+        lightboxTrack.addEventListener('click', (e) => {
+            if(e.target.classList.contains('lightbox-slide')) closeLightbox();
+        });
+
+        // WhatsApp Form Messaging parameters
         const form = document.getElementById("whatsappForm");
         const button = document.getElementById("whatsappBtn");
         const toggleBtns = document.querySelectorAll('.toggle-btn');
