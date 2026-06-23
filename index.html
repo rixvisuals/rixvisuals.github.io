@@ -19,7 +19,8 @@
             --text-primary: #1d1d1f;
             --text-secondary: #86868b;
             --easing: cubic-bezier(0.165, 0.84, 0.44, 1);
-            --bounce-easing: cubic-bezier(0.34, 1.6, 0.64, 1);
+            /* Smoothed animation curve for Safari stability */
+            --bounce-easing: cubic-bezier(0.25, 1, 0.5, 1);
             --apple-spring: cubic-bezier(0.68, -0.6, 0.32, 1.6);
             --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
@@ -31,6 +32,7 @@
             width: 100%;
             overflow-x: hidden;
             background-color: var(--bg-color);
+            -webkit-overflow-scrolling: touch;
         }
 
         * {
@@ -99,16 +101,17 @@
             100% { background-position: 200% center; }
         }
 
+        /* Optimized dynamic scroll transition to prevent glitches on iOS */
         .dynamic-bounce-up {
             opacity: 0;
-            transform: translateY(40px) scale(0.97);
-            transition: opacity 0.8s var(--bounce-easing), transform 0.8s var(--bounce-easing);
+            transform: translateY(15px);
+            transition: opacity 0.6s var(--bounce-easing), transform 0.6s var(--bounce-easing);
             will-change: transform, opacity;
         }
 
         .dynamic-bounce-up.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
         /* --------------------------------------------------
@@ -582,35 +585,40 @@
             transform: scale(1.06) rotate(2deg);
         }
 
+        /* Enhanced Mobile Optimization for Safari Breakout Fixes */
         @media (max-width: 768px) {
-            .gear-container-responsive {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
-                margin: 30px auto;
+            #gear {
+                padding: 60px 16px;
             }
 
-            .gear-card.camera-spotlight {
-                grid-column: span 2;
-                padding: 40px 20px;
+            .gear-container-responsive {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                margin: 30px auto;
+                width: 100%;
+            }
+
+            .gear-card {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 30px 20px;
             }
 
             .gear-card.camera-spotlight img {
-                width: 200px;
-            }
-
-            .gear-card.lens-accessory {
-                aspect-ratio: 1 / 1;
-                padding: 15px;
+                width: 180px;
+                max-width: 100%;
             }
 
             .gear-card.lens-accessory img {
-                width: 110px;
-                max-width: 90%;
-                margin-bottom: 10px;
+                width: 130px;
+                max-width: 100%;
+                margin-bottom: 15px;
             }
 
-            .gear-card.lens-accessory h3 {
-                font-size: 0.9rem;
+            .gear-card h3 {
+                font-size: 1rem;
+                margin-top: 10px;
             }
         }
 
@@ -835,7 +843,7 @@
         
         <div class="hero-container">
             <div class="hero-image-side">
-                <img src="https://i.postimg.cc/3R2hbWZx/20251029-143504560-i-OS-1.jpg" alt="Igor Rix Portrait">
+                <img src="image_428127.jpg" alt="Igor Rix Portrait">
             </div>
             <div class="hero-text-side">
                 <h1 class="flow-text">Hi, I'm Igor - a photographer and content creator.</h1>
@@ -992,7 +1000,8 @@
     </div>
 
     <script>
-        const observerOptions = { threshold: 0.02, rootMargin: "0px 0px -20px 0px" };
+        /* Optimized intersection threshold settings to avoid frame jumps on mobile devices */
+        const observerOptions = { threshold: 0.05, rootMargin: "0px 0px -40px 0px" };
         const bounceObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { 
                 if (entry.isIntersecting) {
