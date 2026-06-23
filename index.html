@@ -19,15 +19,20 @@
             --text-primary: #1d1d1f;
             --text-secondary: #86868b;
             --easing: cubic-bezier(0.165, 0.84, 0.44, 1);
-            /* Dynamic high-motion spring bounce curve for elegant entrances */
             --bounce-easing: cubic-bezier(0.34, 1.6, 0.64, 1);
             --apple-spring: cubic-bezier(0.68, -0.6, 0.32, 1.6);
             --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         /* --------------------------------------------------
-           RESET & GLOBAL
+           RESET & SAFARI BREAKOUT FIXES
            -------------------------------------------------- */
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -37,11 +42,8 @@
         }
 
         body {
-            background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: var(--font-stack);
-            overflow-x: hidden;
-            width: 100vw;
         }
 
         ::-webkit-scrollbar {
@@ -83,10 +85,9 @@
             100% { background-position: 200% center; }
         }
 
-        /* High-motion bounce entrance class assignment */
         .dynamic-bounce-up {
             opacity: 0;
-            transform: translateY(60px) scale(0.95);
+            transform: translateY(40px) scale(0.97);
             transition: opacity 0.8s var(--bounce-easing), transform 0.8s var(--bounce-easing);
             will-change: transform, opacity;
         }
@@ -97,7 +98,7 @@
         }
 
         /* --------------------------------------------------
-           NAVIGATION & ANIMATED HAMBURGER
+           NAVIGATION (SAFARI CENTERING OPTIMIZED)
            -------------------------------------------------- */
         .nav-wrapper {
             position: fixed;
@@ -106,8 +107,10 @@
             width: 100%;
             display: flex;
             justify-content: center;
+            align-items: center;
             z-index: 1000;
             pointer-events: none;
+            padding: 0 20px;
         }
 
         nav {
@@ -122,8 +125,9 @@
             align-items: center;
             gap: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-            transition: transform 0.3s var(--easing), width 0.3s;
-            max-width: 90%;
+            transition: transform 0.3s var(--easing);
+            max-width: 100%;
+            margin: 0 auto;
         }
 
         nav .pfp {
@@ -216,14 +220,14 @@
                 top: 75px;
                 left: 50%;
                 transform: translateX(-50%) scale(0.9);
-                background: rgba(255, 255, 255, 0.96);
+                background: rgba(255, 255, 255, 0.98);
                 backdrop-filter: blur(30px);
                 -webkit-backdrop-filter: blur(30px);
                 flex-direction: column;
                 padding: 24px 16px;
                 border-radius: 24px;
                 border: 1px solid rgba(0, 0, 0, 0.08);
-                width: 240px;
+                width: 260px;
                 text-align: center;
                 gap: 12px;
                 box-shadow: 0 20px 40px rgba(0,0,0,0.1);
@@ -250,7 +254,8 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            padding: 140px 20px 80px 20px;
+            padding: 140px 24px 80px 24px;
+            width: 100%;
         }
 
         .orb {
@@ -370,9 +375,9 @@
         }
 
         @media (max-width: 768px) {
-            #hero { padding-top: 110px; }
-            .hero-container { grid-template-columns: 1fr; gap: 40px; }
-            .hero-image-side { height: 420px; }
+            #hero { padding-top: 110px; padding-left: 16px; padding-right: 16px; }
+            .hero-container { grid-template-columns: 1fr; gap: 32px; }
+            .hero-image-side { height: 400px; }
             .scroll-pill { display: none; }
         }
 
@@ -380,14 +385,15 @@
            ABOUT SECTION
            -------------------------------------------------- */
         #about {
-            padding: 150px 20px;
+            padding: 120px 24px;
             max-width: 900px;
             margin: 0 auto;
             text-align: center;
+            width: 100%;
         }
 
         #about p {
-            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-size: clamp(1.4rem, 4vw, 3rem);
             font-weight: 600;
             line-height: 1.4;
             color: #e0e0e0;
@@ -427,17 +433,16 @@
            PORTFOLIO GRID
            -------------------------------------------------- */
         #portfolio {
-            padding: 100px 20px;
+            padding: 100px 24px;
             max-width: 1400px;
             margin: 0 auto;
+            width: 100%;
         }
         
         #portfolio .section-header {
-            grid-column: 1 / -1;
             text-align: left;
             font-size: clamp(3rem, 8vw, 6rem);
             margin-bottom: 60px;
-            padding-left: 10px;
         }
 
         .gallery-wrapper {
@@ -445,6 +450,7 @@
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 25px;
             padding: 0;
+            width: 100%;
         }
 
         .card-container {
@@ -479,9 +485,7 @@
         }
 
         @media (max-width: 768px) {
-            #portfolio {
-                padding: 60px 12px;
-            }
+            #portfolio { padding: 60px 16px; }
             .gallery-wrapper {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
@@ -496,8 +500,15 @@
            GEAR SECTION (THE ARSENAL)
            -------------------------------------------------- */
         #gear {
-            padding: 100px 20px;
+            padding: 100px 24px;
             background: radial-gradient(circle at 50% 50%, #fafafa 0%, #ffffff 100%);
+            width: 100%;
+        }
+
+        #gear h2 {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: left;
         }
 
         .gear-container-responsive {
@@ -507,6 +518,7 @@
             grid-template-columns: 1.2fr 1fr 1fr;
             gap: 25px;
             align-items: stretch;
+            width: 100%;
         }
 
         .gear-card {
@@ -560,6 +572,7 @@
             .gear-container-responsive {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 16px;
+                margin: 30px auto;
             }
 
             .gear-card.camera-spotlight {
@@ -568,7 +581,7 @@
             }
 
             .gear-card.camera-spotlight img {
-                width: 220px;
+                width: 200px;
             }
 
             .gear-card.lens-accessory {
@@ -591,9 +604,10 @@
            CONTACT & FORM
            -------------------------------------------------- */
         #contact {
-            padding: 150px 20px;
+            padding: 120px 24px;
             text-align: center;
             position: relative;
+            width: 100%;
         }
 
         .contact-container {
@@ -601,9 +615,11 @@
             margin: 0 auto;
             background: rgba(245,245,247,0.8);
             backdrop-filter: blur(20px);
-            padding: 40px;
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px 24px;
             border-radius: 30px;
             border: 1px solid rgba(0,0,0,0.04);
+            width: 100%;
         }
 
         .form-group {
@@ -706,9 +722,16 @@
            CANVAS SECTION
            -------------------------------------------------- */
         #canvas-orders {
-            padding: 100px 20px;
+            padding: 100px 24px;
             text-align: center;
             background: linear-gradient(to bottom, #ffffff, #f5f5f7);
+            width: 100%;
+        }
+
+        #canvas-orders .section-header {
+            max-width: 1100px;
+            margin: 0 auto 20px auto;
+            text-align: left;
         }
 
         .canvas-grid {
@@ -717,6 +740,7 @@
             gap: 30px;
             max-width: 1100px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .canvas-card {
@@ -749,6 +773,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.96);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 9999;
             display: none;
             justify-content: center;
@@ -763,7 +788,7 @@
         .close-lb { position: absolute; top: 30px; right: 30px; color: var(--text-primary); font-size: 2rem; cursor: pointer; transition: transform 0.3s; }
         .close-lb:hover { transform: rotate(90deg); }
 
-        footer { padding: 40px; text-align: center; font-size: 0.8rem; color: #a1a1a6; border-top: 1px solid #f5f5f7; }
+        footer { padding: 40px; text-align: center; font-size: 0.8rem; color: #a1a1a6; border-top: 1px solid #f5f5f7; width: 100%; }
 
     </style>
 </head>
@@ -818,7 +843,6 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Zm4.75-.88a.88.88 0 1 1 0 1.75a.88.88 0 0 1 0-1.75Z"/></svg>
             </a>
             <a href="https://www.tiktok.com/@_ir.photo_?is_from_webapp=1&sender_device=pc" target="_blank" class="social-icon" aria-label="TikTok">
-                <!-- Symmetrically uniform minimal TikTok SVG built to align perfectly with the Instagram styling -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12.5 2v13.5a3.5 3.5 0 1 1-3.5-3.5c.3 0 .6.04.9.12V9.04a6.5 6.5 0 1 0 5.6 6.46V7a5.5 5.5 0 0 0 4.5 5.4V9.3a2.5 2.5 0 0 1-4-2.3V2h-3.5z"/>
                 </svg>
@@ -860,7 +884,6 @@
         <h2 class="dynamic-bounce-up flow-text">The Arsenal</h2>
         
         <div class="gear-container-responsive">
-            <!-- Camera Body Module -->
             <div class="gear-card camera-spotlight dynamic-bounce-up">
                 <a href="https://www.sony.com/za/interchangeable-lens-cameras/products/ilce-6400" target="_blank">
                     <img src="https://i.postimg.cc/4xhJQGfN/sony-a6400.webp" alt="Sony a6400">
@@ -868,7 +891,6 @@
                 </a>
             </div>
 
-            <!-- Lens Optics Box 1 -->
             <div class="gear-card lens-accessory dynamic-bounce-up">
                 <a href="https://www.sony.com/za/electronics/interchangeable-lenses/selp16502" target="_blank">
                     <img src="https://i.postimg.cc/13CySzvC/16-50.png" alt="Lens">
@@ -876,7 +898,6 @@
                 </a>
             </div>
             
-            <!-- Lens Optics Box 2 -->
             <div class="gear-card lens-accessory dynamic-bounce-up">
                 <a href="https://www.tamron.com/global/consumer/lenses/a047/photo.html" target="_blank">
                     <img src="https://i.postimg.cc/zvck5KRS/tamron.png" alt="Lens">
@@ -957,21 +978,18 @@
     </div>
 
     <script>
-        // 1. INFINITE DYNAMIC BOUNCE INTERSECTION OBSERVER (Triggers on scroll down AND scroll back up)
         const observerOptions = { threshold: 0.02, rootMargin: "0px 0px -20px 0px" };
         const bounceObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { 
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible'); 
                 } else {
-                    // Pulls class off when element disappears from vision context window so it can re-trigger
                     entry.target.classList.remove('visible');
                 }
             });
         }, observerOptions);
         document.querySelectorAll('.dynamic-bounce-up').forEach(el => bounceObserver.observe(el));
 
-        // 2. EXTRA EARLY CALIBRATED TEXT REVEAL ENGINE
         const textElement = document.getElementById('revealText');
         if(textElement) {
             const words = textElement.innerText.split(' ');
@@ -988,7 +1006,6 @@
                 const sectionTop = document.getElementById('about').offsetTop;
                 const sectionHeight = document.getElementById('about').offsetHeight;
                 
-                // Offset boosted up to +750 to phase words to black even earlier
                 let percentage = (scrollPos - sectionTop + 750) / (sectionHeight);
                 let activeCount = Math.floor(percentage * spans.length);
                 
@@ -999,7 +1016,6 @@
             });
         }
 
-        // 3. MAGNETIC BUTTONS
         const btns = document.querySelectorAll('.magnetic-btn');
         btns.forEach(btn => {
             btn.addEventListener('mousemove', function(e) {
@@ -1011,7 +1027,6 @@
             btn.addEventListener('mouseleave', function() { btn.style.transform = 'translate(0px, 0px)'; });
         });
 
-        // 4. SMOOTH SCROLL ENGINE
         function executePremiumSmoothScroll(targetSelector) {
             const element = document.querySelector(targetSelector);
             if (!element) return;
@@ -1064,7 +1079,6 @@
             });
         });
 
-        // 5. LIGHTBOX LOGIC
         const lightbox = document.getElementById('lightbox');
         const lbImg = lightbox.querySelector('img');
         const closeLb = lightbox.querySelector('.close-lb');
@@ -1085,7 +1099,6 @@
         closeLb.addEventListener('click', closeLightbox);
         lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
 
-        // 6. FORM LOGIC & CANVAS PRINT INTERACTION SYNC
         const form = document.getElementById("whatsappForm");
         const button = document.getElementById("whatsappBtn");
         const toggleBtns = document.querySelectorAll('.toggle-btn');
