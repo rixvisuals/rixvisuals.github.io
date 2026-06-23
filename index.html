@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -19,8 +19,7 @@
             --text-primary: #1d1d1f;
             --text-secondary: #86868b;
             --easing: cubic-bezier(0.165, 0.84, 0.44, 1);
-            /* Smoothed animation curve for Safari stability */
-            --bounce-easing: cubic-bezier(0.25, 1, 0.5, 1);
+            --apple-ease: cubic-bezier(0.25, 1, 0.5, 1);
             --apple-spring: cubic-bezier(0.68, -0.6, 0.32, 1.6);
             --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
@@ -66,11 +65,11 @@
         /* Mobile Scrollbar Removal Fix */
         @media (max-width: 768px) {
             html, body {
-                scrollbar-width: none; /* Firefox */
-                -ms-overflow-style: none; /* IE/Edge */
+                scrollbar-width: none;
+                -ms-overflow-style: none;
             }
             ::-webkit-scrollbar {
-                display: none; /* Safari and Chrome */
+                display: none;
                 width: 0 !important;
                 height: 0 !important;
             }
@@ -101,15 +100,18 @@
             100% { background-position: 200% center; }
         }
 
-        /* Optimized dynamic scroll transition to prevent glitches on iOS */
-        .dynamic-bounce-up {
+        /* 
+           Clean layout animation to prevent bounce-back 
+           stuttering and glitching on mobile scroll-up.
+        */
+        .dynamic-fade-in-up {
             opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.6s var(--bounce-easing), transform 0.6s var(--bounce-easing);
+            transform: translateY(25px);
+            transition: opacity 0.7s var(--apple-ease), transform 0.7s var(--apple-ease);
             will-change: transform, opacity;
         }
 
-        .dynamic-bounce-up.visible {
+        .dynamic-fade-in-up.visible {
             opacity: 1;
             transform: translateY(0);
         }
@@ -528,6 +530,7 @@
             text-align: left;
         }
 
+        /* Standard Desktop Layout */
         .gear-container-responsive {
             max-width: 1200px;
             margin: 50px auto;
@@ -585,40 +588,48 @@
             transform: scale(1.06) rotate(2deg);
         }
 
-        /* Enhanced Mobile Optimization for Safari Breakout Fixes */
+        /* 
+           Fixed iOS/Mobile Multi-Row structure
+           Row 1: Full-width Spotlight Camera
+           Row 2: Two Lenses perfectly split side-by-side
+        */
         @media (max-width: 768px) {
             #gear {
                 padding: 60px 16px;
             }
 
             .gear-container-responsive {
-                display: flex;
-                flex-direction: column;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
                 gap: 16px;
                 margin: 30px auto;
                 width: 100%;
             }
 
-            .gear-card {
-                width: 100%;
-                box-sizing: border-box;
-                padding: 30px 20px;
+            .gear-card.camera-spotlight {
+                grid-column: span 2; /* Takes up full top row width */
+                padding: 35px 20px;
+            }
+
+            .gear-card.lens-accessory {
+                grid-column: span 1; /* Splits second row into 2 clean columns side-by-side */
+                padding: 25px 12px;
             }
 
             .gear-card.camera-spotlight img {
-                width: 180px;
-                max-width: 100%;
+                width: 160px;
+                max-width: 90%;
             }
 
             .gear-card.lens-accessory img {
-                width: 130px;
-                max-width: 100%;
-                margin-bottom: 15px;
+                width: 100px;
+                max-width: 90%;
+                margin-bottom: 12px;
             }
 
             .gear-card h3 {
-                font-size: 1rem;
-                margin-top: 10px;
+                font-size: 0.9rem;
+                margin-top: 8px;
             }
         }
 
@@ -854,13 +865,13 @@
     </section>
 
     <section id="about">
-        <h2 class="dynamic-bounce-up flow-text">The Philosophy</h2>
+        <h2 class="dynamic-fade-in-up flow-text">The Philosophy</h2>
         <br>
         <p class="reveal-text" id="revealText">
             Photography is not about the camera. It is about freezing a split second of time that will never happen again. From the roar of an engine on the track to the quiet gaze of a predator in the bush, I strive to tell stories without words.
         </p>
         
-        <div class="social-row dynamic-bounce-up">
+        <div class="social-row dynamic-fade-in-up">
             <a href="https://www.instagram.com/_ir.photo_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-icon" aria-label="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Zm4.75-.88a.88.88 0 1 1 0 1.75a.88.88 0 0 1 0-1.75Z"/></svg>
             </a>
@@ -873,54 +884,56 @@
     </section>
 
     <section id="portfolio">
-        <h2 class="section-header flow-text dynamic-bounce-up">Work</h2>
+        <h2 class="section-header flow-text dynamic-fade-in-up">Work</h2>
         <div class="gallery-wrapper">
-            <div class="card-container dynamic-bounce-up">
+            <div class="card-container dynamic-fade-in-up">
                 <div class="card"><img src="https://i.postimg.cc/15GpDYv1/IR-4799.jpg" alt="Work 1"></div>
             </div>
-            <div class="card-container dynamic-bounce-up">
+            <div class="card-container dynamic-fade-in-up">
                 <div class="card"><img src="https://i.postimg.cc/VLqjXHDX/IR-3245.jpg" alt="Work 2"></div>
             </div>
-            <div class="card-container dynamic-bounce-up">
+            <div class="card-container dynamic-fade-in-up">
                 <div class="card"><img src="https://i.postimg.cc/4N6zpFBS/IR-4164.jpg" alt="Work 3"></div>
             </div>
-            <div class="card-container dynamic-bounce-up">
+            <div class="card-container dynamic-fade-in-up">
                 <div class="card"><img src="https://i.postimg.cc/MGTPP8Lx/IMG-4481.jpg" alt="Work 4"></div>
             </div>
-            <div class="card-container dynamic-bounce-up">
+            <div class="card-container dynamic-fade-in-up">
                 <div class="card"><img src="https://i.postimg.cc/MpXv5Y5Q/2-IR-1179.jpg" alt="Work 5"></div>
             </div>
-            <div class="card-container dynamic-bounce-up">
+            <div class="card-container dynamic-fade-in-up">
                 <div class="card"><img src="https://i.postimg.cc/PqR60RGf/IR-4187.jpg" alt="Work 6"></div>
             </div>
-            <div class="card-container dynamic-bounce-up">
+            <div class="card-container dynamic-fade-in-up">
                 <div class="card"><img src="https://i.postimg.cc/dQGhN0Q6/1_IR_2367.jpg" alt="Work 7"></div>
             </div>
-            <div class="card-container dynamic-bounce-up">
+            <div class="card-container dynamic-fade-in-up">
                 <div class="card"><img src="https://i.postimg.cc/CMbRrKM6/2_IR_2160.jpg" alt="Work 8"></div>
             </div>
         </div>
     </section>
 
     <section id="gear">
-        <h2 class="dynamic-bounce-up flow-text">The Arsenal</h2>
+        <h2 class="dynamic-fade-in-up flow-text">The Arsenal</h2>
         
         <div class="gear-container-responsive">
-            <div class="gear-card camera-spotlight dynamic-bounce-up">
+            <!-- First Row (Full-width on mobile grid) -->
+            <div class="gear-card camera-spotlight dynamic-fade-in-up">
                 <a href="https://www.sony.com/za/interchangeable-lens-cameras/products/ilce-6400" target="_blank">
                     <img src="https://i.postimg.cc/4xhJQGfN/sony-a6400.webp" alt="Sony a6400">
                     <h3>Sony a6400 Body</h3>
                 </a>
             </div>
 
-            <div class="gear-card lens-accessory dynamic-bounce-up">
+            <!-- Second Row (Splits side-by-side cleanly) -->
+            <div class="gear-card lens-accessory dynamic-fade-in-up">
                 <a href="https://www.sony.com/za/electronics/interchangeable-lenses/selp16502" target="_blank">
                     <img src="https://i.postimg.cc/13CySzvC/16-50.png" alt="Lens">
                     <h3>E PZ 16-50mm F3.5-5.6</h3>
                 </a>
             </div>
             
-            <div class="gear-card lens-accessory dynamic-bounce-up">
+            <div class="gear-card lens-accessory dynamic-fade-in-up">
                 <a href="https://www.tamron.com/global/consumer/lenses/a047/photo.html" target="_blank">
                     <img src="https://i.postimg.cc/zvck5KRS/tamron.png" alt="Lens">
                     <h3>Tamron 70-300mm RXD</h3>
@@ -930,7 +943,7 @@
     </section>
 
     <section id="contact">
-        <div class="contact-container dynamic-bounce-up">
+        <div class="contact-container dynamic-fade-in-up">
             <form id="whatsappForm">
                 <div class="form-group">
                     <div class="service-toggle">
@@ -959,33 +972,33 @@
     </section>
 	
 	<section id="canvas-orders">
-        <h2 class="dynamic-bounce-up flow-text section-header">Canvas Prints</h2>
-        <p class="dynamic-bounce-up" style="color: var(--text-secondary); text-align: center; margin-bottom: 40px;">
+        <h2 class="dynamic-fade-in-up flow-text section-header">Canvas Prints</h2>
+        <p class="dynamic-fade-in-up" style="color: var(--text-secondary); text-align: center; margin-bottom: 40px;">
             High-quality gallery wraps. Printed with archival inks on premium canvas.
         </p>
 
         <div class="canvas-grid">
-            <div class="canvas-card dynamic-bounce-up" data-size="A3">
+            <div class="canvas-card dynamic-fade-in-up" data-size="A3">
                 <h3>A3 Canvas</h3>
                 <p class="dimensions">297 x 420 mm</p>
                 <div class="price">R650</div>
             </div>
 
-            <div class="canvas-card dynamic-bounce-up" data-size="A2">
+            <div class="canvas-card dynamic-fade-in-up" data-size="A2">
                 <div class="size-tag">Most Popular</div>
                 <h3>A2 Canvas</h3>
                 <p class="dimensions">420 x 594 mm</p>
                 <div class="price">R950</div>
             </div>
 
-            <div class="canvas-card dynamic-bounce-up" data-size="A1">
+            <div class="canvas-card dynamic-fade-in-up" data-size="A1">
                 <h3>A1 Canvas</h3>
                 <p class="dimensions">594 x 841 mm</p>
                 <div class="price">R1,500</div>
             </div>
         </div>
         
-        <p class="dynamic-bounce-up" style="color: var(--text-secondary); margin-top: 30px; font-size: 0.9rem;">
+        <p class="dynamic-fade-in-up" style="color: var(--text-secondary); margin-top: 30px; font-size: 0.9rem;">
             *Delivery not included in price. Pickup Available in Stellenbosch
         </p>
     </section>
@@ -1000,18 +1013,19 @@
     </div>
 
     <script>
-        /* Optimized intersection threshold settings to avoid frame jumps on mobile devices */
-        const observerOptions = { threshold: 0.05, rootMargin: "0px 0px -40px 0px" };
-        const bounceObserver = new IntersectionObserver((entries) => {
+        /* 
+           Adjusted scroll triggers: elements reveal on downward movement 
+           and stay steadily layout-locked without shifting when scrolling up.
+        */
+        const observerOptions = { threshold: 0.02, rootMargin: "0px 0px -10px 0px" };
+        const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { 
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible'); 
-                } else {
-                    entry.target.classList.remove('visible');
                 }
             });
         }, observerOptions);
-        document.querySelectorAll('.dynamic-bounce-up').forEach(el => bounceObserver.observe(el));
+        document.querySelectorAll('.dynamic-fade-in-up').forEach(el => scrollObserver.observe(el));
 
         const textElement = document.getElementById('revealText');
         if(textElement) {
