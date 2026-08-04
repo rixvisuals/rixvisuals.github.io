@@ -152,6 +152,36 @@ async function startServer() {
     });
   });
 
+  // API Route: Proxy Google Drive images through server to bypass CORS, Referrer blocking, and hotlink prevention when hosted
+  app.get("/api/drive/image/:fileId", async (req, res) => {
+    const { fileId } = req.params;
+    const urls = [
+      `https://lh3.googleusercontent.com/d/${fileId}`,
+      `https://drive.google.com/uc?export=view&id=${fileId}`
+    ];
+
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, {
+          headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          }
+        });
+        if (response.ok) {
+          const contentType = response.headers.get("content-type") || "image/jpeg";
+          res.setHeader("Content-Type", contentType);
+          res.setHeader("Cache-Control", "public, max-age=86400, s-maxage=86400");
+          const arrayBuffer = await response.arrayBuffer();
+          return res.send(Buffer.from(arrayBuffer));
+        }
+      } catch (err) {
+        console.warn(`Drive image proxy failed for ${url}:`, err);
+      }
+    }
+
+    return res.redirect(`https://lh3.googleusercontent.com/d/${fileId}`);
+  });
+
   // Helper to format exposure time as fractional ratio (e.g., 0.000625 -> "1/1600s", 0.5 -> "1/2s", 2 -> "2s")
   function formatShutterTime(seconds: number): string {
     if (seconds >= 1) {

@@ -8,7 +8,7 @@ export const samplePhotos: Photo[] = [
     tagline: 'HIGH SPEED APEX',
     date: 'OCTOBER 2025',
     location: 'PHILLIP ISLAND CIRCUIT',
-    imageUrl: '/src/assets/images/green_car_misty_1782210470106.jpg',
+    imageUrl: '/images/green_car_misty_1782210470106.jpg',
     specs: { camera: 'Sony Alpha 7R V', lens: '70-200mm f/2.8 GM', shutter: '1/2000s', aperture: 'f/2.8', iso: '100' },
     story: 'Captured mid-corner at 180km/h through the misty morning track fog.'
   },
@@ -19,7 +19,7 @@ export const samplePhotos: Photo[] = [
     tagline: 'LIFE THROUGH OPTICS',
     date: 'DECEMBER 2025',
     location: 'SHIBUYA EXPRESSWAY',
-    imageUrl: '/src/assets/images/driver_cockpit_view_1782210484649.jpg',
+    imageUrl: '/images/driver_cockpit_view_1782210484649.jpg',
     specs: { camera: 'Leica M11', lens: 'Summicron-M 35mm f/2', shutter: '1/60s', aperture: 'f/2.0', iso: '800' },
     story: 'First person perspective steering through the neon lit tollways of midnight Tokyo.'
   },
@@ -30,7 +30,7 @@ export const samplePhotos: Photo[] = [
     tagline: 'CREATIVE DIRECTION',
     date: 'JANUARY 2026',
     location: 'MELBOURNE STUDIO',
-    imageUrl: '/src/assets/images/igor_photographer_1782210450713.jpg',
+    imageUrl: '/images/igor_photographer_1782210450713.jpg',
     specs: { camera: 'Hasselblad 907X', lens: 'XCD 80mm f/1.9', shutter: '1/250s', aperture: 'f/1.9', iso: '100' },
     story: 'Behind the scenes at Rixvisuals headquarters.'
   },
@@ -109,7 +109,7 @@ export const albumsData: Album[] = [
     id: 'album_porsche',
     title: 'PORSCHE CIRCUIT ARCHIVES',
     folderCode: 'DIR_PORSCHE_CIRCUIT',
-    coverImageUrl: '/src/assets/images/green_car_misty_1782210470106.jpg',
+    coverImageUrl: '/images/green_car_misty_1782210470106.jpg',
     date: 'OCT 2025',
     location: 'PHILLIP ISLAND',
     photos: [samplePhotos[0], samplePhotos[3], samplePhotos[5]]
@@ -118,7 +118,7 @@ export const albumsData: Album[] = [
     id: 'album_tokyo',
     title: 'MIDNIGHT EXPRESSWAY',
     folderCode: 'DIR_TOKYO_NIGHTS',
-    coverImageUrl: '/src/assets/images/driver_cockpit_view_1782210484649.jpg',
+    coverImageUrl: '/images/driver_cockpit_view_1782210484649.jpg',
     date: 'DEC 2025',
     location: 'TOKYO, JAPAN',
     photos: [samplePhotos[1], samplePhotos[4], samplePhotos[7]]
@@ -127,7 +127,7 @@ export const albumsData: Album[] = [
     id: 'album_studio',
     title: 'BESPOKE STUDIO & TRACK SESSIONS',
     folderCode: 'DIR_STUDIO_WORKS',
-    coverImageUrl: '/src/assets/images/igor_photographer_1782210450713.jpg',
+    coverImageUrl: '/images/igor_photographer_1782210450713.jpg',
     date: 'JAN 2026',
     location: 'STELLENBOSCH, ZA',
     photos: [samplePhotos[2], samplePhotos[6], samplePhotos[8]]
@@ -151,7 +151,7 @@ export const aboutContent = {
   paragraphs: [
     "I'm a student from Maties with a deep passion for photography and motorsports. Combining my academic journey at Stellenbosch University with an unyielding love for high-speed racing and visual storytelling, I created Rixvisuals to capture the raw energy, mechanical emotion, and design precision of automotive culture through my lens."
   ],
-  avatarUrl: '/src/assets/images/igor_photographer_1782210450713.jpg',
-  portfolioOwnerPhotoLeft: '/src/assets/images/green_car_misty_1782210470106.jpg',
-  portfolioOwnerPhotoRight: '/src/assets/images/driver_cockpit_view_1782210484649.jpg'
+  avatarUrl: '/images/igor_photographer_1782210450713.jpg',
+  portfolioOwnerPhotoLeft: '/images/green_car_misty_1782210470106.jpg',
+  portfolioOwnerPhotoRight: '/images/driver_cockpit_view_1782210484649.jpg'
 };

@@ -28,7 +28,7 @@ export default function App() {
   
   // Localized state for the hero image to support custom upload directly
   const [userHeroImg, setUserHeroImg] = useState<string>(() => {
-    return localStorage.getItem('rixvisuals_hero_image') || '/src/assets/images/igor_photographer_1782210450713.jpg';
+    return localStorage.getItem('rixvisuals_hero_image') || '/images/igor_photographer_1782210450713.jpg';
   });
 
   const handleHeroImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +45,7 @@ export default function App() {
   };
 
   const handleResetHeroImage = () => {
-    setUserHeroImg('/src/assets/images/igor_photographer_1782210450713.jpg');
+    setUserHeroImg('/images/igor_photographer_1782210450713.jpg');
     localStorage.removeItem('rixvisuals_hero_image');
   };
   
@@ -353,7 +353,7 @@ export default function App() {
                     <div className="flex items-center gap-2 text-black">
                       <ShoppingBag size={18} />
                       <h3 className="font-sans font-bold text-sm tracking-widest uppercase">
-                        Digital Shot Selection (R50)
+                        Active Print Requests
                       </h3>
                     </div>
                     <button
@@ -367,7 +367,7 @@ export default function App() {
                   {printCart.length === 0 ? (
                     <div className="py-20 text-center space-y-4">
                       <p className="text-xs text-neutral-400 font-mono tracking-wider">
-                        YOUR DIGITAL SELECTION IS CURRENTLY EMPTY
+                        YOUR PRINT SELECTIONS ARE CURRENTLY EMPTY
                       </p>
                       <button
                         onClick={() => {
@@ -383,7 +383,7 @@ export default function App() {
                   ) : (
                     <div className="space-y-4">
                       <p className="text-xs text-neutral-500 font-sans font-light leading-relaxed">
-                        The following captures have been selected for digital high-res ordering (R50 per shot). Click below to proceed to order on WhatsApp.
+                        The following masterpieces have been selected for bespoke framing queries. Click on any item below to load its booking parameters.
                       </p>
                       
                       <div className="space-y-3">
@@ -401,7 +401,7 @@ export default function App() {
                                   <h4 className="text-xs font-bold font-sans uppercase tracking-wider text-neutral-900">
                                     {item.title}
                                   </h4>
-                                  <span className="text-[10px] text-pink-600 font-mono block font-semibold">High-Res Digital File (R50)</span>
+                                  <span className="text-[10px] text-neutral-400 font-mono block">Museum Cotton Baryta Rag</span>
                                 </div>
                               </div>
                               <button
@@ -429,10 +429,10 @@ export default function App() {
                       }}
                       className="w-full bg-black text-white py-3.5 font-mono text-xs tracking-widest font-bold hover:bg-neutral-800 transition-colors uppercase rounded"
                     >
-                      PROCEED TO DIGITAL ORDER FORM
+                      PROCEED TO PRINT INQUIRY Form
                     </button>
                     <p className="text-[10px] text-neutral-400 font-mono text-center tracking-wide">
-                      Deliverables sent digitally via WhatsApp / Email in original high resolution.
+                      Pricing and frame sizes are hand-calculated per client location.
                     </p>
                   </div>
                 )}

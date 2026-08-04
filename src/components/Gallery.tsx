@@ -12,8 +12,32 @@ interface GalleryProps {
 function SmartImage({ src, alt, className = '', ...props }: React.ImgHTMLAttributes<HTMLImageElement>) {
   const [loaded, setLoaded] = useState(false);
   const [errorStatus, setErrorStatus] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
 
-  const isResolving = !src;
+  useEffect(() => {
+    setCurrentSrc(src);
+    setErrorStatus(false);
+    setLoaded(false);
+  }, [src]);
+
+  const handleError = () => {
+    if (currentSrc) {
+      if (currentSrc.includes('lh3.googleusercontent.com/d/')) {
+        const fileId = currentSrc.split('lh3.googleusercontent.com/d/')[1];
+        if (fileId) {
+          setCurrentSrc(`/api/drive/image/${fileId}`);
+          return;
+        }
+      }
+      if (currentSrc.startsWith('/src/assets/images/')) {
+        setCurrentSrc(currentSrc.replace('/src/assets/images/', '/images/'));
+        return;
+      }
+    }
+    setErrorStatus(true);
+  };
+
+  const isResolving = !currentSrc;
 
   return (
     <div className="relative w-full h-full bg-neutral-950/10 overflow-hidden flex items-center justify-center">
@@ -25,12 +49,12 @@ function SmartImage({ src, alt, className = '', ...props }: React.ImgHTMLAttribu
           </span>
         </div>
       )}
-      {src && (
+      {currentSrc && (
         <img
-          src={src}
+          src={currentSrc}
           alt={alt}
           onLoad={() => setLoaded(true)}
-          onError={() => setErrorStatus(true)}
+          onError={handleError}
           draggable={false}
           onContextMenu={(e) => e.preventDefault()}
           onDragStart={(e) => e.preventDefault()}
@@ -215,7 +239,7 @@ export default function Gallery({ onOrderPrint, searchQuery = '' }: GalleryProps
                             tagline: `FRAME ${String(pIdx + 1).padStart(2, '0')}`,
                             date: targetAlbum.date,
                             location: targetAlbum.location,
-                            imageUrl: `https://lh3.googleusercontent.com/d/${file.id}`,
+                            imageUrl: `/api/drive/image/${file.id}`,
                             specs: {
                               camera: 'HASSELBLAD 907X',
                               lens: lenses[pIdx % lenses.length],
@@ -231,7 +255,7 @@ export default function Gallery({ onOrderPrint, searchQuery = '' }: GalleryProps
                         setAlbums((prevAlbums) =>
                           prevAlbums.map((a) =>
                             a.id === targetAlbum.id
-                              ? { ...a, coverImageUrl: `https://lh3.googleusercontent.com/d/${firstFileId}`, photos: drivePhotosList }
+                              ? { ...a, coverImageUrl: `/api/drive/image/${firstFileId}`, photos: drivePhotosList }
                               : a
                           )
                         );
@@ -319,7 +343,7 @@ export default function Gallery({ onOrderPrint, searchQuery = '' }: GalleryProps
               tagline: `FRAME ${String(index + 1).padStart(2, '0')}`,
               date: album.date,
               location: album.location,
-              imageUrl: `https://lh3.googleusercontent.com/d/${file.id}`,
+              imageUrl: `/api/drive/image/${file.id}`,
               specs: {
                 camera: 'HASSELBLAD 907X',
                 lens: lenses[index % lenses.length],
@@ -335,7 +359,7 @@ export default function Gallery({ onOrderPrint, searchQuery = '' }: GalleryProps
           setAlbums(prevAlbums =>
             prevAlbums.map((a) =>
               a.id === selectedAlbumId
-                ? { ...a, coverImageUrl: `https://lh3.googleusercontent.com/d/${data.files[0].id}`, photos: mapped }
+                ? { ...a, coverImageUrl: `/api/drive/image/${data.files[0].id}`, photos: mapped }
                 : a
             )
           );
@@ -557,19 +581,6 @@ export default function Gallery({ onOrderPrint, searchQuery = '' }: GalleryProps
                     <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                     <span className="font-mono text-[10px] tracking-widest uppercase">BACK TO LIBRARIES</span>
                   </button>
-                  {activeAlbum.driveUrl && !isHiddenFolder && (
-                    <a
-                      href={activeAlbum.driveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3.5 py-2 border border-blue-200 hover:border-blue-600 bg-blue-50/20 hover:bg-blue-50 text-blue-700 rounded-lg transition-all group cursor-pointer"
-                    >
-                      <span className="font-mono text-[10px] tracking-widest uppercase">
-                        {cloudConfig?.provider === 'onedrive' ? 'EXPLORE ON ONEDRIVE' : 'EXPLORE ON DRIVE'}
-                      </span>
-                      <ExternalLink size={12} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </a>
-                  )}
                   <div className="h-6 w-[1px] bg-neutral-200 hidden md:block"></div>
                   <div className="flex items-center gap-2 font-mono text-[10px] tracking-wider text-neutral-400">
                     <span>COLLECTIONS</span>

@@ -115,7 +115,7 @@ export default function About() {
             </div>
             <h3 className="font-sans text-xs tracking-widest font-bold uppercase text-neutral-900">BESPOKE DELIVERY</h3>
             <p className="text-xs text-neutral-500 leading-relaxed font-light">
-              Delivering pristine high-resolution digital deliverables for automotive enthusiasts, collectors, and media publications worldwide.
+              Crafting museum-grade silver halide prints for high-end individual garages, collectors, and corporate showrooms worldwide.
             </p>
           </div>
         </div>

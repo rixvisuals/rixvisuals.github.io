@@ -104,7 +104,7 @@ export default function Contact({
             </div>
 
             <p className="text-sm text-neutral-500 font-sans font-light leading-relaxed">
-              Available for bespoke automotive commercial campaigns, gallery feature license inquiries, collection documentation, and high-resolution digital shot orders.
+              Available for bespoke automotive commercial campaigns, gallery feature license inquiries, collection documentation, and high-end framed print purchases.
             </p>
 
             <div className="space-y-6 font-sans text-xs text-neutral-600 pt-4">
@@ -217,7 +217,7 @@ export default function Contact({
                     className="w-full text-sm font-sans px-4 py-3 border border-neutral-200 focus:border-black focus:ring-0 rounded-lg bg-white outline-none transition-all"
                   >
                     <option value="Private Photoshoot">Private Photoshoot</option>
-                    <option value="Digital High-Res Shot Order">Digital High-Res Shot Order (R50)</option>
+                    <option value="Custom Canvas Print">Custom Canvas Print</option>
                   </select>
                 </div>
 
@@ -233,7 +233,7 @@ export default function Contact({
                     rows={6}
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Describe your automotive machine, location, deadline, or requested digital shot selection..."
+                    placeholder="Describe your automotive machine, location, deadline or print frame dimensions..."
                     className="w-full text-sm font-sans px-4 py-3 border border-neutral-200 focus:border-black focus:ring-0 rounded-lg outline-none transition-all placeholder:text-neutral-300 resize-y"
                   />
                 </div>

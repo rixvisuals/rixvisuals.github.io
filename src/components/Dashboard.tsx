@@ -12,8 +12,8 @@ const DEFAULT_MOCK_INQUIRIES: Inquiry[] = [
     id: 'inq_mock1',
     name: 'Julian Vance',
     email: 'vance@apexcollectors.com',
-    subject: 'Digital High-Res Shot Order',
-    message: 'Hey Igor, I saw your Porsche RWB "Shumokuzame" capture from Mount Donna Buang. I would like to order the full high-resolution digital file for R50 via WhatsApp. Thanks!',
+    subject: 'Bespoke Print Order',
+    message: 'Hey Igor, I saw your Porsche RWB "Shumokuzame" frame from Mount Donna Buang. I want to buy a large format signed physical cotton rag print. Do you do customized white oak wooden frames? It would look spectacular in my private gallery alongside our actual aircooled JDM collection.',
     photoChoice: 'PORSCHE RWB "SHUMOKUZAME"',
     createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString(), // 3 hours ago
     status: 'unread'

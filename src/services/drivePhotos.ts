@@ -77,7 +77,7 @@ export function useRandomDrivePhotos() {
                       : 'DRIVE CAPTURE';
                     driveImages.push({
                       title,
-                      url: `https://lh3.googleusercontent.com/d/${file.id}`,
+                      url: `/api/drive/image/${file.id}`,
                     });
                   }
                 }
@@ -93,7 +93,7 @@ export function useRandomDrivePhotos() {
                       : 'DRIVE CAPTURE';
                     driveImages.push({
                       title,
-                      url: `https://lh3.googleusercontent.com/d/${file.id}`,
+                      url: `/api/drive/image/${file.id}`,
                     });
                   }
                 }
