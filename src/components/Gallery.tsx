@@ -22,8 +22,22 @@ function SmartImage({ src, alt, className = '', ...props }: React.ImgHTMLAttribu
 
   const handleError = () => {
     if (currentSrc) {
+      if (currentSrc.startsWith('/api/drive/image/')) {
+        const fileId = currentSrc.split('/api/drive/image/')[1];
+        if (fileId) {
+          setCurrentSrc(`https://lh3.googleusercontent.com/d/${fileId}`);
+          return;
+        }
+      }
       if (currentSrc.includes('lh3.googleusercontent.com/d/')) {
         const fileId = currentSrc.split('lh3.googleusercontent.com/d/')[1];
+        if (fileId) {
+          setCurrentSrc(`https://drive.google.com/uc?export=view&id=${fileId}`);
+          return;
+        }
+      }
+      if (currentSrc.includes('drive.google.com/uc?export=view&id=')) {
+        const fileId = currentSrc.split('drive.google.com/uc?export=view&id=')[1];
         if (fileId) {
           setCurrentSrc(`/api/drive/image/${fileId}`);
           return;
@@ -31,6 +45,10 @@ function SmartImage({ src, alt, className = '', ...props }: React.ImgHTMLAttribu
       }
       if (currentSrc.startsWith('/src/assets/images/')) {
         setCurrentSrc(currentSrc.replace('/src/assets/images/', '/images/'));
+        return;
+      }
+      if (currentSrc !== '/images/green_car_misty_1782210470106.jpg') {
+        setCurrentSrc('/images/green_car_misty_1782210470106.jpg');
         return;
       }
     }
@@ -55,6 +73,7 @@ function SmartImage({ src, alt, className = '', ...props }: React.ImgHTMLAttribu
           alt={alt}
           onLoad={() => setLoaded(true)}
           onError={handleError}
+          referrerPolicy="no-referrer"
           draggable={false}
           onContextMenu={(e) => e.preventDefault()}
           onDragStart={(e) => e.preventDefault()}

@@ -31,6 +31,15 @@ export default function About() {
                     src={randomPair.rightImg}
                     alt={randomPair.rightTitle}
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src.includes('lh3.googleusercontent.com/d/')) {
+                        const fileId = target.src.split('lh3.googleusercontent.com/d/')[1];
+                        target.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                      } else {
+                        target.src = '/images/driver_cockpit_view_1782210484649.jpg';
+                      }
+                    }}
                     className="w-full h-full object-cover transition-opacity duration-700 animate-fadeIn"
                   />
                 </div>
@@ -42,6 +51,15 @@ export default function About() {
                     src={randomPair.leftImg}
                     alt={randomPair.leftTitle}
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src.includes('lh3.googleusercontent.com/d/')) {
+                        const fileId = target.src.split('lh3.googleusercontent.com/d/')[1];
+                        target.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                      } else {
+                        target.src = '/images/green_car_misty_1782210470106.jpg';
+                      }
+                    }}
                     className="w-full h-full object-cover transition-opacity duration-700 animate-fadeIn"
                   />
                 </div>
